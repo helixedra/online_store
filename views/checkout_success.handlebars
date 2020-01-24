@@ -1,0 +1,22 @@
+<div class="wrapper container container-sm container-md container-lg container-xl">
+    {{> header }}
+    <main>
+        <section>
+            <h3 class="title">Оформление заказа</h3>
+            
+            <div>
+                
+                <p>{{message}}</p>
+
+                <p>Номер заказа: №{{order_id}}</p>
+                
+            </div>
+
+        </section>
+    </main>
+    {{#if success}}
+    <script>localStorage.removeItem('cart-guest')</script>
+    {{/if}}
+</div>
+
+{{> footer }}

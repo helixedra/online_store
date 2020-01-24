@@ -1,0 +1,189 @@
+<header>
+    <div class="top-header row align-items-center justify-content-between">
+        <div class="col-2 logo">
+            <a href="/"><img src="/images/lansot-logo.svg" alt="Lansot logo лансот логотип"></a>
+        </div>
+        <div class="search col-8 d-none d-lg-block">
+            <input type="text" autocomplete="off" placeholder="Поиск">
+        </div>
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-icon col-1 d-sm-block d-lg-none" data-toggle="collapse" href="#mobileMenu"
+            role="button" aria-expanded="false" aria-controls="mobileMenu">
+            <i class="far fa-bars"></i>
+        </button>
+        <!-- Mobile Menu Button -->
+        <div class="tools d-flex col-2 align-items-center flex-nowrap justify-content-end">
+            <div class="cart-icon">
+                <div>
+                    <button type="button" class="btn reset-btn tool-hover" data-toggle="modal" data-target="#cartModal">
+                        <i class="far fa-shopping-cart"></i>
+                        <div class="cart-counter"></div>
+                    </button>
+                </div>
+            </div>
+            <div class="account-icon">
+                <!--Show for guests-->
+                <div id="guest-menu">
+                    <button class="btn reset-btn tool-hover" data-toggle="modal" data-target="#loginModal">
+                        <i class="far fa-user-circle"></i>
+                    </button>
+                </div>
+                <!--Show for registred users-->
+                <div id="user-menu" style="display: none;">
+                    <button class="btn reset-btn tool-hover" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="far fa-user-circle"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right account-menu">
+                        <a href="/user/profile">Личные данные</a>
+                        <a href="/user/orders">Мои заказы</a>
+                        <a href="/user/logout">Выйти</a>
+                    </div>
+                </div>
+                <!-- -->
+            </div>
+        </div>
+    </div>
+    <div class="bottom-header d-none d-lg-flex align-items-center justify-content-between">
+        <nav class="d-none d-lg-flex justify-content-between">
+            <div class="dropdown">
+                <button class="btn catalog-dropdown-button dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Каталог</button>
+                <div class="dropdown-menu catalog-dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {{#each categories}}
+                    <a href="/products/c/{{this.ref}}">{{this.title}}</a>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="sub-nav d-flex align-items-center">
+                <a href="">Новости</a>
+                <a href="">Оплата и доставка</a>
+                <a href="">Контакты</a>
+            </div>
+            <div class="tel d-none d-lg-flex align-items-center"><i class="fab fa-viber"></i>097 112 26 16</div>
+        </nav>
+    </div>
+</header>
+<!-- Mobile menu -->
+<div class="collapse" id="mobileMenu">
+    <nav class="mobile-menu d-flex flex-column">
+        <a href="">Каталог</a>
+        <a href="">Новости</a>
+        <a href="">Оплата и доставка</a>
+        <a href="">Контакты</a>
+    </nav>
+</div>
+<!-- Mobile menu -->
+<!-- Cart Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-cart" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartModal">Корзина</h5>
+                <button type="button" class="close reset-btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="far fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id='cart-items'>
+                    <div class="cart-empty">Корзина пуста</div>
+                </div>
+
+                <div class="modal-bottom d-flex align-items-center cart-bottom">
+                    <button class="cart-resume mr-auto reset-btn" data-dismiss="modal" aria-label="Close">Продолжить
+                        покупки</button>
+                    <div class="spinner-border cart-spinner" role="status" id="cart-spinner">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="cart-total" id="total"></div>
+                    <button class="cart-checkout reset-btn" onclick="window.location.href = '/cart/checkout'">Оформить заказ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Modal -->
+
+<!-- LOGIN MODAL -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered login-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <ul class="nav nav-tabs flex-grow-1" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#login" role="tab"
+                            aria-controls="login" aria-selected="true">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#registration" role="tab"
+                            aria-controls="registration" aria-selected="false">Регистрация</a>
+                    </li>
+                </ul>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="far fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                        <form action="/user/login" method="post" id="loginForm">
+                            <div class="input-group">
+                                <label for="email">Электронная почта</label>
+                                <input type="text" name="email" placeholder="Электронная почта" id="emailField">
+                            </div>
+                            <div class="input-group">
+                                <label for="password">Пароль</label>
+                                <input type="password" name="password" placeholder="Пароль" id="passwordField" data-eye="loginpass">
+                                <div class="pass-eye" data-eye="loginpass"><i class="far fa-eye-slash"></i></div>
+                            </div>
+                            <div class="input-group d-flex justify-content-between">
+                                <div class="d-flex order-0">
+                                    <input type="checkbox" name="remember" id="">
+                                    <div class="font-small" style="margin-left:.5rem;">Запомнить меня</div>
+                                </div>
+                                <div class="order-1">
+                                    <a href='#' class="font-small">Напомнить пароль</a>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <button type="submit" class="reset-btn primary-btn btn-100">Войти</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="registration" role="tabpanel" aria-labelledby="registration-tab">
+                        <form action="/user/registration" method="post" id="registrationForm">
+                            <div class="input-group">
+                                <label for="name">Имя</label>
+                                <input type="text" name="name" placeholder="Имя" id="nameField">
+                            </div>
+                            <div class="input-group">
+                                <label for="phone">Номер телефона</label>
+                                <input type="text" name="phone" placeholder="Номер телефона" id="phoneField">
+                            </div>
+                            <div class="input-group">
+                                <label for="email">Электронная почта</label>
+                                <input type="text" name="email" placeholder="Электронная почта" id="emailField">
+                            </div>
+                            <div class="input-group">
+                                <label for="password">Пароль</label>
+                                <input type="password" name="password" placeholder="Пароль" id="passwordField" data-eye="registrationpass">
+                                <div class="pass-eye" data-eye="registrationpass"><i class="far fa-eye-slash"></i></div>
+                            </div>
+                            <div class="input-group"></div>
+                            <div class="input-group">
+                                <button type="submit" class="reset-btn primary-btn btn-100">Зарегистрироваться</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / LOGIN MODAL -->

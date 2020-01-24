@@ -1,0 +1,107 @@
+<div class="wrapper container container-sm container-md container-lg container-xl">
+    {{> header }}
+    <main>
+        <section>
+            <h3 class="title">Оформление заказа</h3>
+            <div class="row">
+                <div class="col">
+                    <form action="/cart/checkout" method="post">
+
+                        <div class="checkout-container">
+                            <h6>Контактные данные</h6>
+                            <div class="input-group">
+                                <label for="name">Имя</label>
+                                <input type="text" name="name" placeholder="Имя" id="nameField">
+                            </div>
+                            <div class="input-group">
+                                <label for="phone">Номер телефона</label>
+                                <input type="text" name="phone" placeholder="Номер телефона" id="phoneField">
+                            </div>
+                            <div class="input-group">
+                                <label for="email">Электронная почта</label>
+                                <input type="text" name="email" placeholder="Электронная почта" id="emailField">
+                            </div>
+                        </div>
+
+                        <div class="checkout-container">
+                            <h6>Доставка</h6>
+                            <div class="delivery-option">
+                                <div class="radio-select radio-active" data-delivery-option="Самовывоз">
+                                    <i class="far fa-check-circle"></i><span class="radio-label">Самовывоз</span>
+                                </div>
+                                <div class="selected-content">Ulitsa Kolesnikova 18, Minsk, Belarus</div>
+                            </div>
+
+                            <div class="delivery-option">
+                                <div class="radio-select" data-delivery-option="Доставка">
+                                    <i class="far fa-circle"></i><span class="radio-label">Доставка</span
+                                        class="radio-label">
+                                </div>
+                                <div class="selected-content none">
+                                    <div class="input-group">
+                                        <label for="delivery-address">Адрес доставки</label>
+                                        <input type="text" name="delivery_address" placeholder="Адрес доставки">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="delivery-option">
+                                <div class="radio-select" data-delivery-option="Новая почта">
+                                    <i class="far fa-circle"></i><span class="radio-label">Новая почта</span
+                                        class="radio-label">
+                                </div>
+                                <div class="selected-content none">
+                                    <div class="input-group">
+                                        <label for="np-address">Отделение</label>
+                                        <input type="text" name="np_address" placeholder="Отделение">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="delivery_option" value="Самовывоз">
+                        </div>
+
+
+                        <div class="checkout-container">
+                            <h6>Оплата</h6>
+                            <div class="payment-option">
+
+                                <div class="radio-select radio-active" data-payment-option="Наличными при получении">
+                                    <i class="far fa-check-circle"></i><span class="radio-label">Наличными при получении</span>
+                                </div>
+
+                            </div>
+                            <div class="payment-option">
+                                <div class="radio-select" data-payment-option="Оплата картой">
+                                    <i class="far fa-circle"></i><span class="radio-label">Оплата картой</span
+                                        class="radio-label">
+                                </div>
+
+                            </div>
+                            <input type="hidden" name="payment_option" value="Наличными при получении">
+                        </div>
+
+                </div>
+                <div class="col">
+                    <div class="checkout-cart"></div>
+                    <div class="checkout-total">
+                        <div class="">К оплате</div>
+                        <div class="checkout-total-sum"></div>
+                        <input type="hidden" name="client_id" value="0">
+                        <input type="hidden" name="order" value="">
+                        <input type="hidden" name="total" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-footer">
+                <button type="submit" class="cart-checkout reset-btn">Оформить заказ</button>
+            </div>
+            </form>
+</div>
+
+</section>
+</main>
+<script src="/js/checkout.js"></script>
+</div>
+
+{{> footer }}
