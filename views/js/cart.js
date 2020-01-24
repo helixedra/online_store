@@ -98,11 +98,11 @@ function updateCart() {
     if (items) {
         $('.cart-bottom').removeClass('none')
         getCart(items)
-        setCheckmark(items)
+        setStatus(items)
     } else {
         $('.cart-empty').show()
         $('.cart-bottom').addClass('none')
-        setCheckmark(items)
+        setStatus(items)
     }
 }
 
@@ -123,22 +123,22 @@ function getCart(data) {
     })
 }
 
-function setCheckmark(items) {
+function setStatus(items) {
     if (items) {
-        $('.add-to-cart-s').each(function(){
+        $('.add-to-cart').each(function(){
             let id = parseInt($(this).attr('data-id'))
             let item = Object.values(items).indexOf(id)
 
             if (item !== -1) {
-                $(this).addClass('add-checkmark')
+                $(this).addClass('added-to-cart').html('Добавлен в корзину')
             } else {
-                $(this).removeClass('add-checkmark')
+                $(this).removeClass('added-to-cart').htm('<i class="fal fa-shopping-cart"></i> Купить')
             }
 
         })
     } else {
-        $('.add-to-cart-s').each(function(){
-            $(this).removeClass('add-checkmark')
+        $('.add-to-cart').each(function(){
+            $(this).removeClass('added-to-cart').html('<i class="fal fa-shopping-cart"></i> Купить')
         })
     }
 }
@@ -303,7 +303,6 @@ $('.add-to-cart-s, .add-to-cart').click(function () {
 
         console.log(findSameItem);
         
-
         if ( findSameItem !== -1 ) {
             
             // cart[foundIndex].q = parseInt(cart[foundIndex].q) + 1
@@ -319,7 +318,7 @@ $('.add-to-cart-s, .add-to-cart').click(function () {
 
         // Save new cart array to localStorage
         localStorage.setItem('cart-guest', JSON.stringify(cart))
-        $(this).addClass('add-checkmark')
+        setStatus(getCartItemsIdLS())
 
     } else {
 
@@ -336,18 +335,15 @@ $('.add-to-cart-s, .add-to-cart').click(function () {
 
 // ---
 
-// --- SPECIAL SELECTOR FOR DYNAMIC CONTENT
-// $('body').on('click', '.class', function() {}
-
 
 // --- PLUS BUTTON ---
 $('body').on('click', '.plusqty', function () {
-    var id = $(this).attr('data-item')
-    var price = $('.qty[data-item="' + id + '"]').attr('data-price')
-    var qty = $('.qty[data-item="' + id + '"]')
+    let id = $(this).attr('data-item')
+    let price = $('.qty[data-item="' + id + '"]').attr('data-price')
+    let qty = $('.qty[data-item="' + id + '"]')
     if (qty.val() <= 99) {
         qty.val(parseInt(qty.val()) + 1)
-        var sum = numFormat((qty.val() * price))
+        let sum = numFormat((qty.val() * price))
         $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
         totalLast()
         updateQuantity(id, qty.val())
@@ -358,12 +354,12 @@ $('body').on('click', '.plusqty', function () {
 
 // --- MINUS BUTTON ---
 $('body').on('click', '.minusqty', function () {
-    var id = $(this).attr('data-item')
-    var price = $('.qty[data-item="' + id + '"]').attr('data-price')
-    var qty = $('.qty[data-item="' + id + '"]')
+    let id = $(this).attr('data-item')
+    let price = $('.qty[data-item="' + id + '"]').attr('data-price')
+    let qty = $('.qty[data-item="' + id + '"]')
     if (qty.val() > 1) {
         qty.val(parseInt(qty.val()) - 1)
-        var sum = numFormat(qty.val() * price)
+        let sum = numFormat(qty.val() * price)
         $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
         totalLast()
         updateQuantity(id, qty.val())
@@ -374,14 +370,26 @@ $('body').on('click', '.minusqty', function () {
 
 // --- INPUT CHANGE EVENT ---
 $('body').on('change', '.qty', function () {
-    var price = $(this).attr('data-price')
-    var qty = $(this).val()
-    var id = $(this).attr('data-item')
-    var sum = numFormat(qty * price)
-    $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
-    totalLast()
-    updateQuantity(id, qty)
-    cartCounter()
+
+    let qty = $(this).val()
+
+    if(qty === '' || qty === '0') {
+        run(1, $(this))
+    } else {
+        run(qty, $(this))
+    }
+
+    function run(qty, scope) {
+        scope.val(qty)
+        let price = scope.attr('data-price')
+        let id = scope.attr('data-item')
+        let sum = numFormat(qty * price)
+        $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
+        totalLast()
+        updateQuantity(id, qty)
+        cartCounter()
+    }
+    
 })
 // ---
 
@@ -393,7 +401,7 @@ $('body').on('click', '.item-delete', function () {
     isCartEmpty()
     totalLast()
     cartCounter()
-    // setCheckmark(getCartItemsIdLS())
+    setStatus(getCartItemsIdLS())
 })
 // ---
 

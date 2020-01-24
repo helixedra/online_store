@@ -244,6 +244,12 @@ nav {
     color: #EB5757;
 }
 
+.added-to-cart {
+    border: 2px solid #828282 !important;
+    background-color: #FFFFFF !important;
+    color: #828282 !important;
+}
+
 .add-checkmark {
     color: #b1b1b1;;
 }

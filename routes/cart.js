@@ -62,50 +62,6 @@ router.post('/checkout', async function (req, res) {
         }
     }
 
-
-    //     connection.query('INSERT INTO orders (id, client_name, client_phone, client_email, client_id, delivery_option, payment_option, delivery_address, np_address, order_items, total, order_status) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.body.name, req.body.phone, req.body.email, req.body.client_id, req.body.delivery_option, req.body.payment_option, req.body.delivery_address, req.body.np_address, req.body.order, req.body.total, "new"], async function (err, result) {
-    //         if (err) throw err
-
-    //         // console.log(result)
-    //         // console.log(result.insertId)
-
-    //         if (result) {
-
-
-    //             // send mail with options
-    //             let mail = {
-    //                 from: '"Lansot" <sales@lansot.com>',
-    //                 to: req.body.email,
-    //                 subject: 'Ваша заказ №' + result.insertId + ' принят',
-    //                 template: 'checkout_client_email',
-    //                 context: {
-    //                     client_name: req.body.name,
-    //                     order_id: result.insertId
-    //                 }
-    //             }
-
-    //             let info = await mailer.sendMail(mail);
-
-    //             // console.log("Message sent: %s", info.messageId);
-
-
-
-
-    //         } else {
-    //             res.send(err)
-    //         }
-    //     })
-    // }
-
-
-
-
-
-
-    // res.render('checkout', {
-    //     title: 'Оформление заказа',
-    //     cart: ''
-    // })
 })
 
 module.exports = router

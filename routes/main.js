@@ -9,7 +9,6 @@ router.get('/', async function (req, res) {
        let productsData = await getData('SELECT * FROM products WHERE top = 1 AND primary_item = 1', false);
        let getAllCategories = await getData('SELECT * FROM categories', false)
 
-
         res.render('home', {
             title: 'Homepage',
             categories: getAllCategories,
@@ -17,6 +16,14 @@ router.get('/', async function (req, res) {
             products: productsData
         })
   
+})
+
+router.post('/search', async function(req, res){
+
+    console.log(req.body);
+    
+    // if(req.body)
+    // let search = await getData('SELECT * FROM `products` WHERE title LIKE '%ком%' OR description LIKE '%ком%' OR id LIKE '%ком%'')
 })
 
 module.exports = router
