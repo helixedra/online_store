@@ -12,6 +12,18 @@ function toArray(str) {
     }
 }
 
+function convertData(data) {
+    if(data !== null) {
+        if(data.length > 1 ) {
+            return {...data}
+        } else {
+            return {data}
+        }
+    } else {
+        return false
+    }
+}
+
 //------------------------------
 // ***** ROUTER /products/ *****
 //------------------------------
@@ -22,19 +34,26 @@ router.get('/c/:ref', async function (req, res) {
     let getAllCategories = await getData('SELECT * FROM categories', false)
 
     let categoryData = getAllCategories.filter(category => category.ref === req.params.ref)
+    categoryData = {...categoryData[0]}
 
-    if (categoryData) {
+    if (categoryData !== undefined) {
 
         if (req.query.sort === undefined || req.query.sort === 'rating') {
 
             req.query.sort = 'rating'
 
-            let productsData = await getData('SELECT * FROM products WHERE category = ? AND primary_item = 1  ORDER BY ?? ASC', [categoryData[0].id, req.query.sort]);
+            let productsData = await getData('SELECT * FROM products WHERE category = ? AND primary_item = 1 ORDER BY ?? ASC', [categoryData.id, req.query.sort])
+            
+            if(productsData === null) {
+                productsData = false
+            } else {
+                productsData = {productsData}
+            }
 
             res.render('category', {
-                title: categoryData[0].title,
+                title: categoryData.title,
                 categories: getAllCategories,
-                category: categoryData[0],
+                category: categoryData,
                 // slider: sliderData,
                 products: productsData,
                 sort: 'По популярности'
@@ -42,12 +61,18 @@ router.get('/c/:ref', async function (req, res) {
 
         } else if (req.query.sort === 'priceup') {
 
-            let productsData = await getData('SELECT * FROM products WHERE category = ? AND primary_item = 1 ORDER BY price ASC', categoryData[0].id);
+            let productsData = await getData('SELECT * FROM products WHERE category = ? AND primary_item = 1 ORDER BY price ASC', categoryData.id)
+            
+            if(productsData === null) {
+                productsData = false
+            } else {
+                productsData = {productsData}
+            }
 
             res.render('category', {
-                title: categoryData[0].title,
+                title: categoryData.title,
                 categories: getAllCategories,
-                category: categoryData[0],
+                category: categoryData,
                 // slider: sliderData,
                 products: productsData,
                 sort: 'От дешевых к дорогим'
@@ -55,12 +80,18 @@ router.get('/c/:ref', async function (req, res) {
 
         } else if (req.query.sort === 'pricedown') {
 
-            let productsData = await getData('SELECT * FROM products WHERE category = ? AND primary_item = 1  ORDER BY price DESC', categoryData[0].id);
+            let productsData = await getData('SELECT * FROM products WHERE category = ? AND primary_item = 1  ORDER BY price DESC', categoryData.id)
+            
+            if(productsData === null) {
+                productsData = false
+            } else {
+                productsData = {productsData}
+            }
 
             res.render('category', {
-                title: categoryData[0].title,
+                title: categoryData.title,
                 categories: getAllCategories,
-                category: categoryData[0],
+                category: categoryData,
                 // slider: sliderData,
                 products: productsData,
                 sort: 'От дорогих к дешевым'
@@ -83,41 +114,46 @@ router.get('/p/:id', async function (req, res) {
         // Get product data from DB by id and options
         let productData = await getData('SELECT * FROM products JOIN sizes ON products.size = sizes.size_id WHERE products.id = ? AND products.color = ? AND products.size = ?', [req.params.id, req.query.color, req.query.size])
 
+        // console.log(productData); // obj
+
         // Get all catagories data from DB
         let getAllCategories = await getData('SELECT * FROM categories', false)
+        
+        // console.log(getAllCategories); //array of obj
 
         // Select data for specific category
-        let categoryData = getAllCategories.filter(category => category.id === productData[0].category)
+        let categoryData = getAllCategories.filter(category => category.id === productData.category)
+        categoryData = {...categoryData[0]}
 
         // Get data from DB of all possible color available for selected product
-        let productColorOptions = await getData('SELECT products.id, products.color, products.product_group, products.ref, products.size, colors.color_id, colors.color_name, colors.color_hex FROM products JOIN colors ON products.color = colors.color_id WHERE products.product_group = ?', productData[0].product_group)
+        let productColorOptions = await getData('SELECT products.id, products.color, products.product_group, products.ref, products.size, colors.color_id, colors.color_name, colors.color_hex FROM products JOIN colors ON products.color = colors.color_id WHERE products.product_group = ?', productData.product_group)
 
         // Get array of colors id available for this product in group
         let availableColorsAll = productColorOptions.map(item => item.color)
 
         // Filter colors id (removing duplicates)
         let availableColors = availableColorsAll.filter((item, index) => availableColorsAll.indexOf(item) === index)
-        
+          
         // Create new array with data to provide as product color options in template
         let colorOptions = availableColors.map(id => productColorOptions.find(item => item.color === id))
 
         // Get data from DB for all available size options for selected product
-        let sizeOptions = await getData('SELECT products.id, products.ref, products.color, products.size, products.product_group, sizes.size_id, sizes.size_name FROM products JOIN sizes ON products.size = sizes.size_id WHERE products.color = ? AND products.product_group = ?', [req.query.color, productData[0].product_group])
+        let sizeOptions = await getData('SELECT products.id, products.ref, products.color, products.size, products.product_group, sizes.size_id, sizes.size_name FROM products JOIN sizes ON products.size = sizes.size_id WHERE products.color = ? AND products.product_group = ?', [req.query.color, productData.product_group])
 
         // Get data from DB for related products
-        let relatedProducts = await getData('SELECT * FROM products WHERE products.category = ? AND top = 1 AND primary_item = 1 ORDER BY rating DESC LIMIT 0,4', productData[0].category)
+        let relatedProducts = await getData('SELECT * FROM products WHERE products.category = ? AND top = 1 AND primary_item = 1 ORDER BY rating DESC LIMIT 0,4', productData.category)
 
         // Render template if fetching product data was successful
-        if (productData.length > 0) {
+        if (productData !== undefined) {
             res.render('product', {
-                title: productData[0].title,
-                product: productData[0],
+                title: productData.title,
+                product: productData,
                 categories: getAllCategories,
-                category: categoryData[0],
-                colors: colorOptions,
-                sizes: sizeOptions,
-                thumbs: toArray(productData[0].images),
-                relatedProducts: relatedProducts
+                category: categoryData,
+                colors: {...colorOptions},
+                sizes: convertData(sizeOptions),
+                thumbs: toArray(productData.images),
+                relatedProducts: {relatedProducts}
             })
         } else {
             res.status(404).render('404')

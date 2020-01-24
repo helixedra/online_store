@@ -27,6 +27,7 @@
 
             </div>
             <div class="top-products row row-cols-1 row-cols-md-2 row-cols-lg-4 products-container">
+                {{#if products}}
                 {{#each products}}
                 <div class="product-tile">
                     <a href="/products/p/{{this.id}}?ref={{this.ref}}&color={{this.color}}&size={{this.size}}">
@@ -51,6 +52,9 @@
                     </button> --}}
                 </div>
                 {{/each}}
+                {{else}}
+                <p>Нет товаров</p>
+                {{/if}}
             </div>
         </section>
     </main>
