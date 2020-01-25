@@ -477,6 +477,7 @@ footer {
 
 .search-dropdown {
     margin-left: 3rem;
+    width: calc(100% - 4rem);
 }
 
 .search-found-item {
