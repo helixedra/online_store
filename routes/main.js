@@ -20,10 +20,9 @@ router.get('/', async function (req, res) {
 
 router.post('/search', async function(req, res){
 
-    console.log(req.body);
-    
-    // if(req.body)
-    // let search = await getData('SELECT * FROM `products` WHERE title LIKE '%ком%' OR description LIKE '%ком%' OR id LIKE '%ком%'')
+    let result = await getData('SELECT id, uri, ref, title, color, size, cover_img FROM products WHERE title LIKE ? OR description LIKE ? OR id LIKE ?', ['%'+req.body.search+'%', '%'+req.body.search+'%', '%'+req.body.search+'%'])
+    res.send(result)
+
 })
 
 module.exports = router

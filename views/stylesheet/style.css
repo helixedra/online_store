@@ -475,6 +475,23 @@ footer {
     display: none;
 }
 
+.search-dropdown {
+    margin-left: 3rem;
+}
+
+.search-found-item {
+    padding: .8rem;
+}
+
+.search-not-found {
+    padding: .8rem;
+}
+
+.found-item-img {
+    width: 60px;
+    margin-right: .8rem;
+}
+
 .mobile-menu {
     padding: 24px 0;
     margin-bottom: 32px;
