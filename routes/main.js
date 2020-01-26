@@ -58,6 +58,7 @@ router.get('/delivery', async function (req, res){
         title: 'Оплата и доставка',
         categories: await menuCategories(),
     })
+    
 })
 
 router.get('/contacts', async function (req, res){
@@ -66,6 +67,7 @@ router.get('/contacts', async function (req, res){
         title: 'Контакты',
         categories: await menuCategories(),
     })
+
 })
 
 module.exports = router
