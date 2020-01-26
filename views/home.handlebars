@@ -97,34 +97,18 @@
         <section>
             <h3 class="section-title">Новости</h3>
             <div class="top-news row row-cols-1 row-cols-md-2 row-cols-lg-4 products-container">
+                {{#if news}}
+                {{#each news}}
                 <div class="news-tile">
-                    <div class="news-date">22 декабря 2019</div>
-                    <div class="news-title"><a href="#">Украинцы придумали как зарядить электромобиль за 5 минут</a>
+                    <div class="news-date">{{this.date}}</div>
+                    <div class="news-title"><a href="/news/{{this.id}}?ref={{this.ref}}">{{this.title}}</a>
                     </div>
-                    <div class="news-descr">Каждый месяц, начиная с 2015 года, издание публикует рейтинг
-                        посещаемости интернет-магазинов, используя данные Similar Web.</div>
+                    <div class="news-descr">{{this.preview}}</div>
                 </div>
-                <div class="news-tile">
-                    <div class="news-date">22 декабря 2019</div>
-                    <div class="news-title"><a href="#">Украинцы придумали как зарядить электромобиль за 5 минут</a>
-                    </div>
-                    <div class="news-descr">Каждый месяц, начиная с 2015 года, издание публикует рейтинг
-                        посещаемости интернет-магазинов, используя данные Similar Web.</div>
-                </div>
-                <div class="news-tile">
-                    <div class="news-date">22 декабря 2019</div>
-                    <div class="news-title"><a href="#">Украинцы придумали как зарядить электромобиль за 5 минут</a>
-                    </div>
-                    <div class="news-descr">Каждый месяц, начиная с 2015 года, издание публикует рейтинг
-                        посещаемости интернет-магазинов, используя данные Similar Web.</div>
-                </div>
-                <div class="news-tile">
-                    <div class="news-date">22 декабря 2019</div>
-                    <div class="news-title"><a href="#">Украинцы придумали как зарядить электромобиль за 5 минут</a>
-                    </div>
-                    <div class="news-descr">Каждый месяц, начиная с 2015 года, издание публикует рейтинг
-                        посещаемости интернет-магазинов, используя данные Similar Web.</div>
-                </div>
+               {{/each}}
+               {{else}}
+               <p>Нет новостей<p>
+               {{/if}}
             </div>
         </section>
     </main>
