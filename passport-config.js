@@ -7,6 +7,19 @@ function initialize(passport, getUserByEmail, getUserById) {
 
         // const user = await getUserByEmail(email)
         const user = await getData('SELECT * FROM customers WHERE email = ?', email)
+
+        /*
+    
+        ------------------------------------------------
+        
+        CHECK IS EMAIL IS CONFIRMED AND STATUS = ACTIVE
+
+        ------------------------------------------------
+        
+        */
+
+
+
         //...
         // console.log(user);
         // console.log(user);

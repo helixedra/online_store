@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 const connection = require('../modules/db_connect')
 const mailer = require('../modules/mailer')
+const confimationToken = require('../modules/ctoken')
+const { check, validationResult } = require('express-validator')
+const getData = require('../modules/get_data')
 
 
 // --- checkAuth ---
@@ -25,6 +28,15 @@ function checkNotAuth(req, res, next) {
 
 // --- INSERT DATA TO DATABASE ---
 function insertData(query, params) {
+    return new Promise(resolve => {
+        connection.query(query, params, function (err) {
+            if (err) throw err
+            resolve(true)
+        });
+    })
+}
+// --- UPDATE DATA TO DATABASE ---
+function updateData(query, params) {
     return new Promise(resolve => {
         connection.query(query, params, function (err) {
             if (err) throw err
@@ -79,39 +91,96 @@ router.get('/profile', checkAuth, function (req, res) {
     })
 })
 
-router.post('/registration', async function (req, res) {
+router.get('/confirmation', async function (req, res) {
 
+    // Parse link and compare to DB records
+    const email = req.query.email
+    const key = req.query.key
 
+    if (email !== '' && key !== '') {
 
-    //
+        // Search and compare data from link to DB 
+        let tmpUser = await getData('SELECT * FROM temp_users WHERE email = ? AND a_key = ?', [email, key])
+
+        if (tmpUser !== null) {
+            // If record exist change user status to 'active'
+            let confirmUser = await updateData('UPDATE customers SET status = "active" WHERE email = ?', [email])
+
+            if (confirmUser) {
+                // If status have changed remove temporary user record
+                await updateData('DELETE FROM temp_users WHERE email = ? AND a_key = ?', [email, key])
+
+                // Return success message
+                res.send('Email confirmed!') // REPLACE TO TEMPLATE
+
+            }
+
+        } else {
+            res.sendStatus(422).send('User have not found') // Change to error template
+        }
+    } else {
+
+        // If query parameters missing redirect to home
+        res.redirect('/')
+    }
+
+})
+
+router.post('/registration', [check('email').isEmail()], async (req, res) => {
+
+    /*
+    
+     -----------------------------
+
+     Check if email exist in db to prevent duplicate
+
+     -----------------------------
+    
+    */
+
+    const errors = validationResult(req)
+    const name = req.body.name
+    const email = req.body.email
+    const password = req.body.password
+    const host = req.headers.origin
+
+    if (!errors.isEmpty()) {
+        // If validation not passed return errors
+        return res.sendStatus(422).json({ errors: errors.array() }) // change
+    }
 
     try {
+
         // Create activation key
-        const key = new Buffer(Date.now() + '').toString('base64')
+        const key = confimationToken()
+
+        // Save confirmation data to DB
+        const insertTempUser = await insertData("INSERT INTO temp_users (email, a_key) VALUES (?, ?)", [email, key])
 
         // Create password hash
-        const hashPass = await bcrypt.hash(req.body.password, 10)
+        const hashPass = await bcrypt.hash(password, 10)
 
-       
-        // const insertUser = await insertData("INSERT INTO customers (name, email, password, status) VALUES (?, ?, ?, 'inactive')", [req.body.name, req.body.email, hashPass])
-        const insertTempUser = await insertData("INSERT INTO temp_users (email, a_key) VALUES (?, ?)", [req.body.email, key])
+        const insertUser = await insertData("INSERT INTO customers (name, email, password, status) VALUES (?, ?, ?, 'inactive')", [req.body.name, req.body.email, hashPass])
 
-        if(insertTempUser) res.send('reg')
+        // Create confirmation link
+        const confirmationLink = `${host}/user/confirmation?email=${email}&key=${key}`
+
+        const mail = {
+            from: '"Lansot" <sales@lansot.com>',
+            to: req.body.email,
+            subject: 'Подтверждение регистрации Lansot',
+            template: 'registration_confirmation_email',
+            context: {
+                client_name: name,
+                client_email: email,
+                client_link: confirmationLink
+            }
+        }
+
+        let info = await mailer.sendMail(mail)
+
 
         if (insertUser) {
-
-            
-            // let mail = {
-            //     from: '"Lansot" <sales@lansot.com>',
-            //     to: req.body.email,
-            //     subject: 'Подтверждение регистрации Lansot',
-            //     template: 'registration_email',
-            //     context: {
-            //         client_name: req.body.name,
-            //         order_id: newOrder.insertId
-            //     }
-            // }
-            // let info = await mailer.sendMail(mail)
 
             //If email has been sent then render success template
             // res.send('User added')
