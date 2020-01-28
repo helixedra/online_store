@@ -8,7 +8,6 @@ const confimationToken = require('../modules/ctoken')
 const { check, validationResult } = require('express-validator')
 const getData = require('../modules/get_data')
 
-
 // --- checkAuth ---
 function checkAuth(req, res, next) {
     if (req.isAuthenticated()) {
@@ -71,8 +70,8 @@ router.get('/registration', checkNotAuth, function (req, res) {
 //     res.send(false)
 // })
 
-router.get('/login',
-    function (req, res) {
+router.get('/login', function (req, res) {
+
         if (req.query.auth == 'status') {
             if (req.isAuthenticated()) {
                 res.send(true)
@@ -209,7 +208,7 @@ router.post('/registration', [check('email').isEmail()], async (req, res) => {
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     successFlash: true,
-    failureRedirect: '/user/login',
+    failureRedirect: '/',
     failureFlash: true
 }))
 

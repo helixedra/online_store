@@ -8,6 +8,7 @@ function initialize(passport, getUserByEmail, getUserById) {
         // const user = await getUserByEmail(email)
         const user = await getData('SELECT * FROM customers WHERE email = ?', email)
 
+     
         /*
     
         ------------------------------------------------
@@ -26,16 +27,22 @@ function initialize(passport, getUserByEmail, getUserById) {
         // console.log(user.password);
         
         if(user == null) {
-            return done(null, false, { message: 'User have not found' })
+            return done(null, false, { message: 'Неверный логин или пароль!' }) // user have not found
             // return false
         }
 
+        if(user.status == 'inactive') {
+            return done(null, false, { message: 'Аккаунт не подтвержден' }) // User is not active
+            // return false
+        }
+
+
         try {
             if (await bcrypt.compare(password, user.password)) {
-                return done(null, user)
+                return done(null, user, { message: 'Вы успешно вошли!'}) // successful login
                 // return user
             } else {
-                return done(null, false, { message: 'Password incorrect'})
+                return done(null, false, { message: 'Неверный логин или пароль!'}) // incorrect password
             }
         } catch (e) {
             return done(e)

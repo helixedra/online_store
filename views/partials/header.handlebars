@@ -64,6 +64,23 @@
             <div class="tel d-none d-lg-flex align-items-center"><i class="fab fa-viber"></i>097 112 26 16</div>
         </nav>
     </div>
+
+<!--Alerts-->
+
+{{#if messages.success}}
+<div class="alert alert-success" role="alert">
+  {{messages.success}}
+</div>
+{{/if}}
+
+{{#if messages.error}}
+<div class="alert alert-danger" role="alert">
+  {{messages.error}}
+</div>
+{{/if}}
+
+<!--Alerts-->
+
 </header>
 <!-- Mobile menu -->
 <div class="collapse" id="mobileMenu">

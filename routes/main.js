@@ -10,6 +10,21 @@ async function menuCategories(){
 // define the home page route
 router.get('/', async function (req, res) {
 
+    // let sc = req.flash('success')
+    // let er = req.flash('error')
+    res.locals.success = req.flash('success').toString();
+    res.locals.error = req.flash('error').toString();
+    // res.locals.messages = {
+    //     success: req.flash('success'),
+    //     error: req.flash('error')
+    // }
+
+    // console.log(sc);
+    // var success = sc.length !== 0 ? true : false
+    // var error = er.length !== 0 ? true : false
+    // console.log('success status=', success);
+    // console.log(req.flash('success'))
+
        let sliderData = await getData('SELECT * FROM slider WHERE visible = 1', false);
        let productsData = await getData('SELECT * FROM products WHERE top = 1 AND primary_item = 1', false);
        let news = await getData('SELECT * FROM news ORDER BY date DESC LIMIT 0,4') 
@@ -18,12 +33,19 @@ router.get('/', async function (req, res) {
            item.date = Date.parse(item.date).toString('d.MM.yyyy')  
        })
 
-        res.render('home', {
+        await res.render('home', {
             title: 'Homepage',
             categories: await menuCategories(),
             slider: sliderData,
             products: productsData,
-            news: news
+            news: news,
+            // messageSuccess: success,
+            // messageError: error,
+            messages: {
+                success: res.locals.success,
+                error: res.locals.error
+            }
+            
         })
   
 })

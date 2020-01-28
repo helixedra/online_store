@@ -59,16 +59,16 @@ function hideError(input) {
     $('input[name='+input+']').removeClass('input-error')
 }
 
-$("#loginForm").submit(function(e){
-    e.preventDefault();
+// $("#loginForm").submit(function(e){
+//     e.preventDefault();
     
-    // Return validation status true||false
-    let validationResponse = validate()
+//     // Return validation status true||false
+//     let validationResponse = validate()
 
-    if (validationResponse) {
-        login($(this))
-    }
-});
+//     if (validationResponse) {
+//         login($(this))
+//     }
+// });
 
 function login(data) {
     $.ajax({
@@ -77,6 +77,8 @@ function login(data) {
         data: data.serialize(),
         success: function (result) {
             if (result) {
+                console.log(result);
+                
                 // window.location='/user/profile'
                 statusLogin()
                 $(function () {

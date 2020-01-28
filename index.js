@@ -57,6 +57,6 @@ app.use(function(req, res, next) {
     res.status(404).render('404')
 })
 
-const server = app.listen(5050, function(){
+app.listen(5050, function(){
     console.log('Server started')
 });
