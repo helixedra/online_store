@@ -72,17 +72,27 @@ router.get('/registration', checkNotAuth, function (req, res) {
 
 router.get('/login', function (req, res) {
 
-        if (req.query.auth == 'status') {
-            if (req.isAuthenticated()) {
-                res.send(true)
-            } else {
-                res.send(false)
-            }
+    if (req.query.status === 'success') {
+        res.send({
+            status: 'success',
+            message: req.flash('success').toString()
+        })
+    } else if (req.query.status === 'error') {
+        res.send({
+            status: 'error',
+            message: req.flash('error').toString()
+        })
+    } else if (req.query.auth == 'status') {
+        if (req.isAuthenticated()) {
+            res.send(true)
         } else {
-            res.status(404).send('404 NOT FOUND')
+            res.send(false)
         }
+    } else {
+        res.status(404).send('404 NOT FOUND')
+    }
 
-    })
+})
 
 router.get('/profile', checkAuth, function (req, res) {
     res.render('profile', {
@@ -206,9 +216,9 @@ router.post('/registration', [check('email').isEmail()], async (req, res) => {
 })
 
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/user/login?status=success',
     successFlash: true,
-    failureRedirect: '/',
+    failureRedirect: '/user/login?status=error',
     failureFlash: true
 }))
 

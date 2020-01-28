@@ -516,6 +516,10 @@ footer {
 
 /* GLOBAL */
 
+.m-top-2 {
+    margin-top: 2rem;
+}
+
 h1 {
     font-size: 2rem;
     font-weight: 600;
@@ -1155,4 +1159,15 @@ a:hover {
     margin-top: 3rem;
     margin-bottom: 3rem;
     
+}
+.alert {
+    /* margin-top: 1rem; */
+}
+.alert > button > i {
+    font-family: 'Font Awesome 5 Pro';
+    font-weight: 400;
+}
+.alert-dismissible .close {
+    padding: .8rem !important;
+    height: auto !important;
 }

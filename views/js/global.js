@@ -6,6 +6,7 @@ $(document).ready(function(){
             $('.search-dropdown').removeClass('show')
         }
     })
+
     //Search watch
     $('#search').keyup(function () { 
         // e.preventDefault()
@@ -44,5 +45,7 @@ $(document).ready(function(){
         }).join('')
         return list
     }
+
+
 
 })

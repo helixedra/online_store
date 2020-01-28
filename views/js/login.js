@@ -59,16 +59,16 @@ function hideError(input) {
     $('input[name='+input+']').removeClass('input-error')
 }
 
-// $("#loginForm").submit(function(e){
-//     e.preventDefault();
+$("#loginForm").submit(function(e){
+    e.preventDefault();
     
-//     // Return validation status true||false
-//     let validationResponse = validate()
+    // Return validation status true||false
+    let validationResponse = validate()
 
-//     if (validationResponse) {
-//         login($(this))
-//     }
-// });
+    if (validationResponse) {
+        login($(this))
+    }
+});
 
 function login(data) {
     $.ajax({
@@ -77,13 +77,19 @@ function login(data) {
         data: data.serialize(),
         success: function (result) {
             if (result) {
-                console.log(result);
-                
-                // window.location='/user/profile'
-                statusLogin()
-                $(function () {
-                    $('#loginModal').modal('toggle');
-                 });
+                if(result.status === 'success'){
+                    statusLogin()
+                    $(function () {
+                        $('#loginModal').modal('toggle');
+                     })
+                     $('.login-msg-success').html(result.message)
+                     $('#loginSuccess').show()
+                     fadeError()
+                } else {
+                    $('.login-msg').html(result.message)
+                    $('#loginError').show()
+                    fadeError()
+                }
             } 
         }
     })
@@ -100,6 +106,13 @@ function statusLogin() {
         }
     })
 }
+
+function fadeError () {
+    setTimeout(()=>{
+        $('.alert').hide()
+    }, 10000)
+}
+
 
 $(window).on('load', function(){
     // $.ajax({

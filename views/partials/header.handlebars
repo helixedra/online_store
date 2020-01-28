@@ -1,4 +1,11 @@
 <header>
+    <!--Alerts-->
+    <div class="alert alert-success m-top-2" role="alert" style="display:none;" id="loginSuccess">
+        <div class="login-msg-success">
+            {{messages.success}}
+        </div>
+    </div>
+    <!--Alerts-->
     <div class="top-header row align-items-center justify-content-between">
         <div class="col-2 logo">
             <a href="/"><img src="/images/lansot-logo.svg" alt="Lansot logo лансот логотип"></a>
@@ -65,21 +72,7 @@
         </nav>
     </div>
 
-<!--Alerts-->
 
-{{#if messages.success}}
-<div class="alert alert-success" role="alert">
-  {{messages.success}}
-</div>
-{{/if}}
-
-{{#if messages.error}}
-<div class="alert alert-danger" role="alert">
-  {{messages.error}}
-</div>
-{{/if}}
-
-<!--Alerts-->
 
 </header>
 <!-- Mobile menu -->
@@ -114,7 +107,8 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div class="cart-total" id="total"></div>
-                    <button class="cart-checkout reset-btn" onclick="window.location.href = '/cart/checkout'">Оформить заказ</button>
+                    <button class="cart-checkout reset-btn" onclick="window.location.href = '/cart/checkout'">Оформить
+                        заказ</button>
                 </div>
             </div>
         </div>
@@ -147,6 +141,12 @@
                 <!-- -->
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                        <!--ALERT-->
+                        <div class="alert alert-danger" role="alert" style="display:none;"
+                            id="loginError">
+                            <div class="login-msg"></div>
+                        </div>
+                        <!--ALERT-->
                         <form action="/user/login" method="post" id="loginForm">
                             <div class="input-group">
                                 <label for="email">Электронная почта</label>
@@ -154,7 +154,8 @@
                             </div>
                             <div class="input-group">
                                 <label for="password">Пароль</label>
-                                <input type="password" name="password" placeholder="Пароль" id="passwordField" data-eye="loginpass">
+                                <input type="password" name="password" placeholder="Пароль" id="passwordField"
+                                    data-eye="loginpass">
                                 <div class="pass-eye" data-eye="loginpass"><i class="far fa-eye-slash"></i></div>
                             </div>
                             <div class="input-group d-flex justify-content-between">
@@ -189,7 +190,8 @@
                             </div>
                             <div class="input-group">
                                 <label for="password">Пароль</label>
-                                <input type="password" name="password" placeholder="Пароль" id="passwordField" data-eye="registrationpass">
+                                <input type="password" name="password" placeholder="Пароль" id="passwordField"
+                                    data-eye="registrationpass">
                                 <div class="pass-eye" data-eye="registrationpass"><i class="far fa-eye-slash"></i></div>
                             </div>
                             <div class="input-group"></div>
