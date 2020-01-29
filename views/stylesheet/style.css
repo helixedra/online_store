@@ -1144,9 +1144,9 @@ a:hover {
     font-size: 1.2rem;
 }
 .radio-active > i {
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'Font Awesome 5 Pro';
     color: #12be4c !important;
-    font-weight: 600;
+    font-weight: 400;
 
 }
 .radio-active > span {
