@@ -47,25 +47,45 @@ function checkoutCartItems(data) {
     // Pass 'data' from DB
     // Loop through 'data' and generate html items for cart
     let output = data.map(value => {
+    //     return `<div class="item d-flex align-items-center justify-content-between" id="item-${value.id}" data-item-sum="${(currentItemQty(value.id) * value.price)}">
+    //     <a href="/products/p/${value.uri}">
+    //     <img src="/images/products/${value.uri}/${value.cover_img}" class="item-img" alt="${value.title}">
+    //     </a>
+    //     <div class="item-info" data-pid="${value.id}">
+    //         <div class="item-title">
+    //             <a href="/products/p/${value.uri}" class="reset-link">${value.title}</a>
+    //         </div>
+    //         <div class="item-code">Код товара: <span>${value.id}</span></div>
+    //     </div>
+    //     <div class="item-price" data-price="${value.price}">${numFormat(value.price)} ₴</div>
+    //     <div class="item-qty" data-qty="${currentItemQty(value.id)}">
+    //     ${currentItemQty(value.id)}
+    //         <input type="hidden" data-item="${value.id}" data-price="${value.price}" value="${currentItemQty(value.id)}">
+            
+    //     </div>
+    //     <div class="item-sum-price sum-price" data-item="${value.id}">${numFormat(currentItemQty(value.id) * value.price)} ₴</div>
+        
+    // </div>`
+
         return `<div class="item d-flex align-items-center justify-content-between" id="item-${value.id}" data-item-sum="${(currentItemQty(value.id) * value.price)}">
-                <a href="/products/p/${value.uri}">
-                <img src="/images/products/${value.uri}/${value.cover_img}" class="item-img" alt="${value.title}">
-                </a>
-                <div class="item-info" data-pid="${value.id}">
-                    <div class="item-title">
-                        <a href="/products/p/${value.uri}" class="reset-link">${value.title}</a>
-                    </div>
-                    <div class="item-code">Код товара: <span>${value.id}</span></div>
-                </div>
-                <div class="item-price" data-price="${value.price}">${numFormat(value.price)} ₴</div>
-                <div class="item-qty" data-qty="${currentItemQty(value.id)}">
-                ${currentItemQty(value.id)}
-                    <input type="hidden" data-item="${value.id}" data-price="${value.price}" value="${currentItemQty(value.id)}">
-                    
-                </div>
-                <div class="item-sum-price sum-price" data-item="${value.id}">${numFormat(currentItemQty(value.id) * value.price)} ₴</div>
-                
-            </div>`
+        <a href="/products/p/${value.uri}">
+        <img src="/images/products/${value.uri}/${value.cover_img}" class="item-img" alt="${value.title}">
+        </a>
+        <div class="item-info">
+            <div class="item-title">
+                <a href="/products/p/${value.uri}" class="reset-link">${value.title}</a>
+            </div>
+            <div class="item-code">Код товара: <span>${value.id}</span></div>
+        </div>
+        <div class="item-price">${numFormat(value.price)} ₴</div>
+        <div class="item-qty">
+            
+            <input type="number" data-item="${value.id}" data-price="${value.price}" value="${currentItemQty(value.id)}" class="reset-btn qty" readonly>
+     
+        </div>
+        <div class="item-sum-price sum-price" data-item="${value.id}">${numFormat(currentItemQty(value.id) * value.price)} ₴</div>
+        
+    </div>`
     }).join('')
     
     return output
@@ -87,7 +107,7 @@ function checkoutTotal() {
     itemsTotal.each(function(){
         total += $(this).data('item-sum')
     })
-    
+
     $('.checkout-total-sum').html( numFormat(total)+' ₴' )
     $('input[name=order]').val(createOrder())
     $('input[name=total]').val(total)
@@ -115,6 +135,5 @@ function getCheckoutCart(data) {
 // 
 getCheckoutCart(dataItems)
 // getCheckoutCart(dataItems)
-
 
 })
