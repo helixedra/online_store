@@ -896,9 +896,10 @@ a:hover {
 }
 .pass-eye {
     position: absolute;
-    bottom: 6px;
     right: 14px;
     cursor: pointer;
+    top: 35px;
+    z-index: 1;
 }
 .pass-eye > i:hover {
     opacity: .8;

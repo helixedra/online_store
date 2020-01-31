@@ -44,11 +44,7 @@ function updateData(query, params) {
     })
 }
 
-router.get('/registration', checkNotAuth, function (req, res) {
-    res.render('registration', {
-        title: 'Registration'
-    })
-})
+
 
 // router.get('/login', checkNotAuth, function (req, res) {
 //     // req.flash('error', error)
@@ -135,6 +131,10 @@ router.get('/confirmation', async function (req, res) {
 
 })
 
+router.get('/registration', checkNotAuth, function (req, res) {
+    res.send(req.flash('message')[0])
+})
+
 router.post('/registration', [check('email').isEmail()], async (req, res) => {
 
     /*
@@ -152,6 +152,17 @@ router.post('/registration', [check('email').isEmail()], async (req, res) => {
     const email = req.body.email
     const password = req.body.password
     const host = req.headers.origin
+
+    let emailCheck = await getData('SELECT email FROM customers WHERE email = ?', [email])
+
+    if (emailCheck !== null) {
+        req.flash('message', {
+            status: 'error',
+            message: 'Пользователь с таким e-mail адресом уже зарегистрирован'
+        })
+        res.redirect('/user/registration');
+        return // break and redirect with error
+    }
 
     if (!errors.isEmpty()) {
         // If validation not passed return errors

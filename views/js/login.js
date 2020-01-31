@@ -2,70 +2,116 @@
 
 // Validation
 
-function validate() {
-    let email = $('#emailField').val()
-    let password = $('#passwordField').val()
-    let emailValid = false
-    let passwordValid = false
-    
-    // Validate email
-    if ( email === '' ) {
-        showError('email', 'Введите свой E-mail')
-    } else if ( email.replace(/\s+/g, '').length <= 3 ) {
-        showError('email', 'Введите корректный E-mail')
-    } else if ( !/(.+)@(.+){2,}\.(.+){2,}/.test(email) ) {
-        showError('email', 'Введите корректный E-mail')
-    } else {
-        hideError('email')
-        emailValid = true
-    }
-
-    // Validate password
-    if ( password === '' ) {
-        showError('password', 'Введите пароль')
-    } else if ( /[^\w+ !"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~]/gi.test(password) ) {
-        showError('password', 'Смените раскладку клавиатуры')
-    } else {
-        hideError('password')
-        passwordValid = true
-    }
-    
-    // Rerurn global validation status
-    if ( emailValid && passwordValid ) {
-        return true
+// Validation name
+function validateName(inputPrefix, name = null) {
+    if (name !== null) {
+        if (name !== '') {
+            if (name.length < 2 || /\d+/.test(name)) {
+                showError(inputPrefix + 'Name', 'Введите корректное имя')
+                return false
+            } else {
+                hideError(inputPrefix + 'Name')
+            }
+        } else {
+            showError(inputPrefix + 'Name', 'Введите ваше имя')
+            return false
+        }
     } else {
         return false
     }
-
+    return true
 }
 
-$('input[name=email]').on('change paste keyup', function(){
-    validate()
-})
-$('input[name=password]').on('change paste keyup', function(){
-    validate()
-})
+// Validation phone
+function validatePhone(inputPrefix, phone = null) {
+    if (phone !== null) {
+        if (phone !== '') {
+            if (phone.length < 9 || phone.length > 20 || !/^[\d+()+\s+-]+$/g.test(phone)) {
+                showError(inputPrefix + 'Phone', 'Введите корректный номер')
+                return false
+            } else {
+                hideError(inputPrefix + 'Phone')
+            }
+        } else {
+            showError(inputPrefix + 'Phone', 'Введите ваш номер телефона')
+            return false
+        }
+    } else {
+        return false
+    }
+    return true
+}
+
+
+// Validate email
+function validateEmail(inputPrefix, email = null) {
+    if (email !== null) {
+        if (email !== '') {
+            if (email.length < 4 || !/(.+)@(.+){2,}\.(.+){2,}/.test(email) || email.length > 50) {
+                showError(inputPrefix + 'Email', 'Введите корректный e-mail')
+                return false
+            } else {
+                hideError(inputPrefix + 'Email')
+            }
+        } else {
+            showError(inputPrefix + 'Email', 'Введите ваше e-mail')
+            return false
+        }
+    } else {
+        return false
+    }
+    return true
+}
+
+// Validate password
+function validatePassword(inputPrefix, password = null) {
+    if (password !== null) {
+        if (password !== '') {
+            if (!/[a-zA-Z0-9!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~]/g.test(password) || password.length < 3) {
+                showError(inputPrefix + 'Password', 'Введите корректный пароль. Только латинские буквы, цыфры и специальные символы. Не меньше 3 символов.')
+                return false
+            } else {
+                hideError(inputPrefix + 'Password')
+            }
+        } else {
+            showError(inputPrefix + 'Password', 'Введите пароль')
+            return false
+        }
+    } else {
+        return false
+    }
+    return true
+}
+
+// $('input[name=email]').on('change paste keyup', function () {
+//     validate()
+// })
+// $('input[name=password]').on('change paste keyup', function () {
+//     validate()
+// })
 
 function showError(input, error) {
-    if ( $('#'+input+'Error').html() === undefined ) {
-        $('input[name='+input+']').addClass('input-error').after( "<div class='error-msg' id='"+input+"Error'>"+error+"</div>" )
+    if ($('#' + input + 'Error').length === 0) {
+        $('#' + input).addClass('input-error').after("<div class='error-msg' id='" + input + "Error'>" + error + "</div>")
     } else {
-        $('#'+input+'Error').html(error)
+        $('#' + input + 'Error').html(error)
     }
 }
 
 function hideError(input) {
-    $('#'+input+'Error').remove()
-    $('input[name='+input+']').removeClass('input-error')
+    $('#' + input + 'Error').remove()
+    $('#' + input).removeClass('input-error')
 }
 
-$("#loginForm").submit(function(e){
+// LOGIN
+$("#loginForm").submit(function (e) {
     e.preventDefault();
-    
-    // Return validation status true||false
-    let validationResponse = validate()
 
-    if (validationResponse) {
+    // Return validation status true||false
+    let vEmail = validateEmail('login', $('#loginEmail').val()),
+        vPassword = validatePassword('login', $('#loginPassword').val())
+
+    if (vEmail && vPassword) {
         login($(this))
     }
 });
@@ -77,26 +123,26 @@ function login(data) {
         data: data.serialize(),
         success: function (result) {
             if (result) {
-                if(result.status === 'success'){
+                if (result.status === 'success') {
                     statusLogin()
                     $(function () {
                         $('#loginModal').modal('toggle');
-                     })
-                     $('.login-msg-success').html(result.message)
-                     $('#loginSuccess').show()
-                     fadeError()
+                    })
+                    $('.login-msg-success').html(result.message)
+                    $('#loginSuccess').show()
+                    fadeError()
                 } else {
                     $('.login-msg').html(result.message)
                     $('#loginError').show()
                     fadeError()
                 }
-            } 
+            }
         }
     })
 }
 
 function statusLogin() {
-    $.get('/user/login', {auth:'status'}, function(res) {
+    $.get('/user/login', { auth: 'status' }, function (res) {
         if (res) {
             $('#user-menu').show()
             $('#guest-menu').hide()
@@ -107,14 +153,14 @@ function statusLogin() {
     })
 }
 
-function fadeError () {
-    setTimeout(()=>{
+function fadeError() {
+    setTimeout(() => {
         $('.alert').hide()
     }, 10000)
 }
 
 
-$(window).on('load', function(){
+$(window).on('load', function () {
     // $.ajax({
     //     // async: false,
     //     url: "/login?auth=status",
@@ -128,14 +174,54 @@ $(window).on('load', function(){
     statusLogin()
 })
 
-$('.pass-eye').on('click', function(){
+$('.pass-eye').on('click', function () {
     let input = $(this).attr('data-eye')
-    let inputAttr = $('input[data-eye="'+input+'"]').attr('type')
-    if(inputAttr === 'password') {
-        $('input[data-eye="'+input+'"]').attr('type','text')
+    let inputAttr = $('input[data-eye="' + input + '"]').attr('type')
+    if (inputAttr === 'password') {
+        $('input[data-eye="' + input + '"]').attr('type', 'text')
         $(this).html('<i class="far fa-eye"></i>')
     } else {
-        $('input[data-eye="'+input+'"]').attr('type','password')
+        $('input[data-eye="' + input + '"]').attr('type', 'password')
         $(this).html('<i class="far fa-eye-slash"></i>')
     }
 })
+
+// Registration
+$("#registrationForm").submit(function (e) {
+    e.preventDefault();
+
+    // Return validation status true||false
+    let vName = validateName('reg', $('#regName').val()),
+        vPhone = validatePhone('reg', $('#regPhone').val()),
+        vEmail = validateEmail('reg', $('#regEmail').val()),
+        vPassword = validatePassword('reg', $('#regPassword').val())
+
+    if (vName && vPhone && vEmail && vPassword) {
+        registration($(this))
+    }
+
+})
+
+function registration(data) {
+    $.ajax({
+        url: "/user/registration",
+        type: 'POST',
+        data: data.serialize(),
+        success: function (result) {
+            if (result) {
+                if (result.status === 'success') {
+                    $(function () {
+                        $('#loginModal').modal('toggle');
+                    })
+                    $('.login-msg-success').html(result.message)
+                    $('#loginSuccess').show()
+                    fadeError()
+                } else {
+                    $('.registration-msg').html(result.message)
+                    $('#registrationError').show()
+                    fadeError()
+                }
+            }
+        }
+    })
+}

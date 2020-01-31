@@ -59,7 +59,7 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Каталог</button>
                 <div class="dropdown-menu catalog-dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {{#each categories}}
-                    <a href="/products/c/{{this.ref}}">{{this.title}}</a>
+                        <a href="/products/c/{{this.ref}}">{{this.title}}</a>
                     {{/each}}
                 </div>
             </div>
@@ -142,19 +142,18 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
                         <!--ALERT-->
-                        <div class="alert alert-danger" role="alert" style="display:none;"
-                            id="loginError">
+                        <div class="alert alert-danger" role="alert" style="display:none;" id="loginError">
                             <div class="login-msg"></div>
                         </div>
                         <!--ALERT-->
                         <form action="/user/login" method="post" id="loginForm">
                             <div class="input-group">
                                 <label for="email">Электронная почта</label>
-                                <input type="text" name="email" placeholder="Электронная почта" id="emailField">
+                                <input type="text" name="email" placeholder="Электронная почта" id="loginEmail">
                             </div>
                             <div class="input-group">
                                 <label for="password">Пароль</label>
-                                <input type="password" name="password" placeholder="Пароль" id="passwordField"
+                                <input type="password" name="password" placeholder="Пароль" id="loginPassword"
                                     data-eye="loginpass">
                                 <div class="pass-eye" data-eye="loginpass"><i class="far fa-eye-slash"></i></div>
                             </div>
@@ -175,24 +174,29 @@
                         </form>
                     </div>
                     <div class="tab-pane fade" id="registration" role="tabpanel" aria-labelledby="registration-tab">
+                        <!--ALERT-->
+                        <div class="alert alert-danger" role="alert" style="display:none;" id="registrationError">
+                            <div class="registration-msg"></div>
+                        </div>
+                        <!--ALERT-->
                         <form action="/user/registration" method="post" id="registrationForm">
                             <div class="input-group">
                                 <label for="name">Имя</label>
-                                <input type="text" name="name" placeholder="Имя" id="nameField">
+                                <input type="text" name="name" placeholder="Имя" id="regName">
                             </div>
                             <div class="input-group">
                                 <label for="phone">Номер телефона</label>
-                                <input type="text" name="phone" placeholder="Номер телефона" id="phoneField">
+                                <input type="text" name="phone" placeholder="Номер телефона" id="regPhone">
                             </div>
                             <div class="input-group">
                                 <label for="email">Электронная почта</label>
-                                <input type="text" name="email" placeholder="Электронная почта" id="emailField">
+                                <input type="text" name="email" placeholder="Электронная почта" id="regEmail">
                             </div>
                             <div class="input-group">
                                 <label for="password">Пароль</label>
-                                <input type="password" name="password" placeholder="Пароль" id="passwordField"
-                                    data-eye="registrationpass">
                                 <div class="pass-eye" data-eye="registrationpass"><i class="far fa-eye-slash"></i></div>
+                                <input type="password" name="password" placeholder="Пароль" id="regPassword"
+                                    data-eye="registrationpass">
                             </div>
                             <div class="input-group"></div>
                             <div class="input-group">
