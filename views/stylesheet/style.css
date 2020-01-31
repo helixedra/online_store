@@ -991,7 +991,7 @@ a:hover {
 @media (min-width: 1200px) {
     
     .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1360px;
+        max-width: 1600px;
     }
     .top-products > * {
         max-width: calc(25% - 24px) !important;

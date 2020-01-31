@@ -85,7 +85,7 @@ function cartItems(data) {
                 <button class="item-delete reset-btn" data-item="${value.id}"><i class="far fa-times"></i></button>
             </div>`
     }).join('')
-    
+
     return output
     /* >>> Return html for cart items */
 }
@@ -93,7 +93,7 @@ function cartItems(data) {
 // *******************************************
 
 function updateCart() {
-    
+
     let items = getCartItemsIdLS() // get obj with ids only from local storage
     if (items) {
         $('.cart-bottom').removeClass('none')
@@ -127,7 +127,7 @@ function getCart(data) {
 
 function setStatus(items) {
     if (items) {
-        $('.add-to-cart').each(function(){
+        $('.add-to-cart').each(function () {
             let id = parseInt($(this).attr('data-id'))
             let item = Object.values(items).indexOf(id)
 
@@ -139,7 +139,7 @@ function setStatus(items) {
 
         })
     } else {
-        $('.add-to-cart').each(function(){
+        $('.add-to-cart').each(function () {
             $(this).removeClass('added-to-cart').html('<i class="fal fa-shopping-cart"></i> Купить')
         })
     }
@@ -238,10 +238,10 @@ function total() {
         total += parseInt($(this).attr('data-price')) * parseInt($(this).val())
     })
     $('#total').html(numFormat(total) + " ₴")
-    $('#total').attr('data-total', ''+total+'')
+    $('#total').attr('data-total', '' + total + '')
 
-    if(isCheckout()){
-        $('.checkout-total-sum').html( numFormat(total)+' ₴' )
+    if (isCheckout()) {
+        $('.checkout-total-sum').html(numFormat(total) + ' ₴')
         $('input[name=order]').val(createOrder())
         $('input[name=total]').val(total)
     }
@@ -281,9 +281,9 @@ function cartCounter() {
 
 /* CHECK IF CART EMPTY AND SHOW EMPTY STATE */
 function isCartEmpty() {
-    if(!getCartItemsIdLS()) { // if local storage empty return false 
+    if (!getCartItemsIdLS()) { // if local storage empty return false 
         $('#cart-items').html('<div class="cart-empty">Корзина пуста</div>')
-        if(isCheckout()) $('.checkout-cart').html('')
+        if (isCheckout()) $('.checkout-cart').html('')
     }
 }
 
@@ -312,12 +312,12 @@ $('.add-to-cart-s, .add-to-cart').click(function () {
 
     if (cart) {
 
-        let findSameItem = cart.findIndex( item => item.p === parseInt(id) )
+        let findSameItem = cart.findIndex(item => item.p === parseInt(id))
 
         // console.log(findSameItem);
-        
-        if ( findSameItem !== -1 ) {
-            
+
+        if (findSameItem !== -1) {
+
             // cart[foundIndex].q = parseInt(cart[foundIndex].q) + 1
 
             // If the same item has already in the cart just do nothing
@@ -386,7 +386,7 @@ $('body').on('change', '.qty', function () {
 
     let qty = $(this).val()
 
-    if(qty === '' || qty === '0') {
+    if (qty === '' || qty === '0') {
         run(1, $(this))
     } else {
         run(qty, $(this))
@@ -402,7 +402,7 @@ $('body').on('change', '.qty', function () {
         updateQuantity(id, qty)
         cartCounter()
     }
-    
+
 })
 // ---
 
@@ -427,53 +427,53 @@ updateCart()
 // --- GET TOTAL AFTER ALL
 totalLast()
 
-$(document).ready(function(){
+$(document).ready(function () {
 
 
     // Radio buttons select
-    $('.radio-select').click(function(){
+    $('.radio-select').click(function () {
 
-        function contentBlock(element, block){
+        function contentBlock(element, block) {
 
             //If this block has content
             if (element.parent().has('div.selected-content').length) {
                 //Hide all blocks
-                $('.'+block+' > .selected-content').addClass('none')
+                $('.' + block + ' > .selected-content').addClass('none')
                 //Then show selected
                 element.parent().children('.selected-content').removeClass('none')
             }
         }
 
-        function activeRadio(element){
+        function activeRadio(element) {
 
             //Get name of controls block
             let block = element.parent().attr('class')
 
             //Remove active status from all elements of block 
-            $('.'+block+'> .radio-select > i').removeClass().addClass('far fa-circle')
-            $('.'+block+'> .radio-select').removeClass('radio-active')
+            $('.' + block + '> .radio-select > i').removeClass().addClass('far fa-circle')
+            $('.' + block + '> .radio-select').removeClass('radio-active')
 
             //Add active status to selected item
             element.addClass('radio-active')
-            element.children('i').attr('class','far fa-check-circle')
+            element.children('i').attr('class', 'far fa-check-circle')
 
             contentBlock(element, block)
 
             let optionName = element.parent().attr('class')
-            $('input[name='+optionName+']').val(element.data(optionName))
+            $('input[name=' + optionName + ']').val(element.data(optionName))
         }
-  
+
         activeRadio($(this))
 
     })
 
     // Checkout cart
 
-// getCheckoutCart(dataItems)
+    // getCheckoutCart(dataItems)
 
-// 
-getCheckoutCart(dataItems)
-// getCheckoutCart(dataItems)
+    // 
+    getCheckoutCart(dataItems)
+    // getCheckoutCart(dataItems)
 
 })
 
@@ -482,60 +482,37 @@ function isCheckout() {
 }
 
 let dataItems = getCartItemsIdLS()
-    // GET AND LOOP ITEMS IN CART
+// GET AND LOOP ITEMS IN CART
 function checkoutCartItems(data) {
     // Pass 'data' from DB
     // Loop through 'data' and generate html items for cart
     let output = data.map(value => {
-        // return `<div class="item d-flex align-items-center justify-content-between" id="item-${value.id}">
-        //         <a href="/products/p/${value.uri}">
-        //         <img src="/images/products/${value.uri}/${value.cover_img}" class="item-img" alt="${value.title}">
-        //         </a>
-        //         <div class="item-info">
-        //             <div class="item-title">
-        //                 <a href="/products/p/${value.uri}" class="reset-link">${value.title}</a>
-        //             </div>
-        //             <div class="item-code">Код товара: <span>${value.id}</span></div>
-        //         </div>
-        //         <div class="item-price">${numFormat(value.price)} ₴</div>
-        //         <div class="item-qty">
-        //             <button class="reset-btn minusqty" data-item="${value.id}"><i class="far fa-minus"></i></button>
-        //             <input type="number" data-item="${value.id}" data-price="${value.price}" value="${currentItemQty(value.id)}" class="reset-btn qty">
-        //             <button class="reset-btn plusqty" data-item="${value.id}"><i class="far fa-plus"></i></button>
-        //         </div>
-        //         <div class="item-sum-price sum-price" data-item="${value.id}">${numFormat(currentItemQty(value.id) * value.price)} ₴</div>
-        //         <button class="item-delete reset-btn" data-item="${value.id}"><i class="far fa-times"></i></button>
-        //     </div>`
-
         return `<div class="item d-flex align-items-center justify-content-between" id="item-${value.id}" data-item-sum="${(currentItemQty(value.id) * value.price)}">
         <a href="/products/p/${value.uri}">
         <img src="/images/products/${value.uri}/${value.cover_img}" class="item-img" alt="${value.title}">
         </a>
-        <div class="item-info">
+        <div class="item-info" data-pid="${value.id}">
             <div class="item-title">
                 <a href="/products/p/${value.uri}" class="reset-link">${value.title}</a>
             </div>
             <div class="item-code">Код товара: <span>${value.id}</span></div>
         </div>
-        <div class="item-price">${numFormat(value.price)} ₴</div>
-        <div class="item-qty">
-            
+        <div class="item-price" data-price="${value.price}">${numFormat(value.price)} ₴</div>
+        <div class="item-qty" data-qty="${currentItemQty(value.id)}">
             <input type="number" data-item="${value.id}" data-price="${value.price}" value="${currentItemQty(value.id)}" class="reset-btn qty" readonly>
-     
         </div>
         <div class="item-sum-price sum-price" data-item="${value.id}">${numFormat(currentItemQty(value.id) * value.price)} ₴</div>
-        
     </div>`
     }).join('')
-    
+
     return output
     /* >>> Return html for cart items */
 }
 
-function createOrder(){
+function createOrder() {
     let cartItems = $('.checkout-cart > .item')
     let order = []
-    cartItems.each(function(){   
+    cartItems.each(function () {
         order.push(`pid=${$(this).children('.item-info').data('pid')};qty=${$(this).children('.item-qty').data('qty')};price=${$(this).children('.item-price').data('price')}`)
     })
     return order
@@ -572,5 +549,5 @@ function getCheckoutCart(data) {
             checkoutTotal()
         }
     })
-  
+
 }

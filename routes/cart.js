@@ -33,9 +33,21 @@ router.get('/checkout', function (req, res) {
 /* CHECKOUT POST */
 router.post('/checkout', async function (req, res) {
 
+
+
+    /*
+    --------------------
+    
+    Checkout Validation 
+
+    --------------------
+    */
+
     //If data passed then insert to DB
     if (req.body.phone !== '' && req.body.email !== '' && req.body.order !== '') {
+
         let newOrder = await insertData('INSERT INTO orders (id, client_name, client_phone, client_email, client_id, delivery_option, payment_option, delivery_address, np_address, order_items, total, order_status) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.body.name, req.body.phone, req.body.email, req.body.client_id, req.body.delivery_option, req.body.payment_option, req.body.delivery_address, req.body.np_address, req.body.order, req.body.total, "new"])
+
         if (newOrder) {
             //If data has been add to DB then send mail with options
             let mail = {
@@ -60,6 +72,8 @@ router.post('/checkout', async function (req, res) {
                 })
             }
         }
+
+
     }
 
 })
