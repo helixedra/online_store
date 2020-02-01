@@ -239,13 +239,11 @@ router.get('/logout', (req, res) => {
 
 router.get('/profile', checkAuth, async function (req, res) {
 
-    console.log(req.session.passport.user);
-
 
     const userData = await getData('SELECT * FROM customers WHERE id = ?', req.session.passport.user)
-    console.log(userData);
-    const adress = userData.adress.split(';')
-    console.log(adress);
+
+    const address = userData.address.split(';')
+
 
     if (userData !== null) {
         res.render('profile', {
@@ -254,16 +252,22 @@ router.get('/profile', checkAuth, async function (req, res) {
                 name: userData.name,
                 email: userData.email,
                 phone: userData.phone,
-                adress: adress
+                address: address
             }
         })
     }
 })
 
-router.get('/orders', checkAuth, function (req, res) {
+router.get('/orders', checkAuth, async function (req, res) {
+
+    let orders = await getData('SELECT * FROM orders WHERE client_id = ?', req.session.passport.user)
+
+
     res.render('orders', {
-        title: 'Orders'
+        title: 'Orders',
+        orders: orders
     })
+
 })
 
 module.exports = router

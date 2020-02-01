@@ -6,4 +6,18 @@
 
     <a href="/user/profile">Профиль</a>
     <a href="/user/orders">Мои заказы</a>
+
+    <div>
+        {{#if orders}}
+            {{#each orders}}
+                <div>
+                    {{this.id}} | {{this.delivery_option}} | {{this.payment_option}} | {{this.delivery_address}} |
+                    {{this.np_address}} | {{this.order_items}} |
+                    {{this.order_status}} | {{this.total}} | {{this.datetime}}
+                </div>
+            {{/each}}
+        {{else}}
+            <div>У вас нет никаких заказов</div>
+        {{/if}}
+    </div>
 </div>

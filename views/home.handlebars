@@ -3,7 +3,7 @@
     <main>
         <section>
             <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-                    {{!-- <ol class="carousel-indicators">
+                {{!-- <ol class="carousel-indicators">
                         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
                         <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
                         <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
@@ -11,14 +11,14 @@
                 <div class="carousel-inner">
 
                     {{#each slider}}
-                    <div class="carousel-item {{this.s_option}}">
-                        <img src="images/{{this.image}}" class="d-block w-100" alt="{{this.title}}">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h1 class="slider-title">{{this.title}}</h1>
-                            <p class="slider-desc d-none d-lg-block">{{this.description}}</p>
-                            <a href="{{this.link}}" class="action-btn">Подробнее</a>
+                        <div class="carousel-item {{this.s_option}}">
+                            <img src="images/{{this.image}}" class="d-block w-100" alt="{{this.title}}">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h1 class="slider-title">{{this.title}}</h1>
+                                <p class="slider-desc d-none d-lg-block">{{this.description}}</p>
+                                <a href="{{this.link}}" class="action-btn">Подробнее</a>
+                            </div>
                         </div>
-                    </div>
                     {{/each}}
 
 
@@ -69,32 +69,32 @@
                 {{!-- {{log products.id}} --}}
 
                 {{#each products}}
-                <div class="product-tile">
-                    <a href="/products/p/{{this.id}}?ref={{this.ref}}&color={{this.color}}&size={{this.size}}">
-                        <img src="/images/products/{{this.uri}}/{{this.cover_img}}" class="product-img"
-                            alt="{{this.title}}">
-                        <div class="product-title">{{this.title}}</div>
-                    </a>
-                    <div class="price">
-                        <div class="prev-price {{#if this.old_price}}{{else}}hidden{{/if}}">{{this.old_price}}</div>
-                        <div class="current-price">{{this.price}}</div>
-                    </div>
-                    <div class="product-status">
-                        {{#if this.stock}}
-                        <span>Есть в наличии</span>
-                        {{else}}
-                        <span class="red">Нет в наличии</span>
-                        {{/if}}
-                    </div>
-                    {{!-- <button type="button" class="add-to-cart-s" data-id="{{this.id}}" {{#if this.stock}}{{else}}disabled{{/if}}>
+                    <div class="product-tile">
+                        <a href="/products/p/{{this.id}}?ref={{this.ref}}&color={{this.color}}&size={{this.size}}">
+                            <img src="/images/products/{{this.uri}}/{{this.cover_img}}" class="product-img"
+                                alt="{{this.title}}">
+                            <div class="product-title">{{this.title}}</div>
+                        </a>
+                        <div class="price">
+                            <div class="prev-price {{#if this.old_price}}{{else}}hidden{{/if}}">{{this.old_price}}</div>
+                            <div class="current-price">{{this.price}}</div>
+                        </div>
+                        <div class="product-status">
+                            {{#if this.stock}}
+                                <span>Есть в наличии</span>
+                            {{else}}
+                                <span class="red">Нет в наличии</span>
+                            {{/if}}
+                        </div>
+                        {{!-- <button type="button" class="add-to-cart-s" data-id="{{this.id}}" {{#if this.stock}}{{else}}disabled{{/if}}>
                         <i class="far fa-shopping-cart"></i>
                     </button> --}}
-                </div>
+                    </div>
                 {{/each}}
 
             </div>
         </section>
-        <section>
+        {{!-- <section>
             <h3 class="section-title">Новости</h3>
             <div class="top-news row row-cols-1 row-cols-md-2 row-cols-lg-4 products-container">
                 {{#if news}}
@@ -110,7 +110,7 @@
                <p>Нет новостей<p>
                {{/if}}
             </div>
-        </section>
+        </section> --}}
     </main>
 
 </div>

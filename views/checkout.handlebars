@@ -11,15 +11,18 @@
                             <h6>Контактные данные</h6>
                             <div class="input-group">
                                 <label for="name">Имя</label>
-                                <input type="text" name="name" placeholder="Имя" id="nameField">
+                                <input type="text" name="name" placeholder="Имя" id="nameField"
+                                    value="{{#if user.name}}{{user.name}}{{/if}}">
                             </div>
                             <div class="input-group">
                                 <label for="phone">Номер телефона</label>
-                                <input type="text" name="phone" placeholder="Номер телефона" id="phoneField">
+                                <input type="text" name="phone" placeholder="Номер телефона" id="phoneField"
+                                    value="{{#if user.phone}}{{user.phone}}{{/if}}">
                             </div>
                             <div class="input-group">
                                 <label for="email">Электронная почта</label>
-                                <input type="text" name="email" placeholder="Электронная почта" id="emailField">
+                                <input type="text" name="email" placeholder="Электронная почта" id="emailField"
+                                    value="{{#if user.email}}{{user.email}}{{/if}}">
                             </div>
                         </div>
 
@@ -40,7 +43,15 @@
                                 <div class="selected-content none">
                                     <div class="input-group">
                                         <label for="delivery-address">Адрес доставки</label>
-                                        <input type="text" name="delivery_address" placeholder="Адрес доставки">
+                                        {{#if user.address}}
+                                            <select name="delivery_address">
+                                                {{#each user.address}}
+                                                    <option>{{this}}</option>
+                                                {{/each}}
+                                            </select>
+                                        {{else}}
+                                            <input type="text" name="delivery_address" placeholder="Адрес доставки">
+                                        {{/if}}
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +78,8 @@
                             <div class="payment-option">
 
                                 <div class="radio-select radio-active" data-payment-option="Наличными при получении">
-                                    <i class="far fa-check-circle"></i><span class="radio-label">Наличными при получении</span>
+                                    <i class="far fa-check-circle"></i><span class="radio-label">Наличными при
+                                        получении</span>
                                 </div>
 
                             </div>
@@ -87,7 +99,7 @@
                     <div class="checkout-total">
                         <div class="">К оплате</div>
                         <div class="checkout-total-sum"></div>
-                        <input type="hidden" name="client_id" value="0">
+                        <input type="hidden" name="client_id" value="{{user.id}}">
                         <input type="hidden" name="order" value="">
                         <input type="hidden" name="total" value="">
                     </div>

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const connection = require('../modules/db_connect')
 const insertData = require('../modules/insert_data')
+const getData = require('../modules/get_data')
 const mailer = require('../modules/mailer')
 
 // Get product data from DB by ids
@@ -22,12 +23,46 @@ router.post('/getcart', function (req, res) {
 })
 
 /* CHECKOUT ROUTER */
-router.get('/checkout', function (req, res) {
+router.get('/checkout', async function (req, res) {
 
-    res.render('checkout', {
-        title: 'Оформление заказа',
-        cart: ''
-    })
+    //Check if user is logged in
+    if (req.session.passport !== undefined) {
+
+        //User is logged in
+        let user = await getData('SELECT * FROM customers WHERE id = ?', req.session.passport.user)
+
+        if (user !== null) {
+            res.render('checkout', {
+                title: 'Оформление заказа',
+                cart: '',
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    phone: user.phone,
+                    email: user.email,
+                    address: user.address.split(';')
+                }
+            })
+
+        } else {
+
+            res.render('checkout', {
+                title: 'Оформление заказа',
+                cart: '',
+                user: { id: 0 }
+            })
+        }
+
+    } else {
+        //User in NOT legged in
+        res.render('checkout', {
+            title: 'Оформление заказа',
+            cart: '',
+            user: { id: 0 }
+        })
+    }
+
+
 })
 
 /* CHECKOUT POST */
