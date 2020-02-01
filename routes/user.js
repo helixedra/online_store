@@ -90,11 +90,7 @@ router.get('/login', function (req, res) {
 
 })
 
-router.get('/profile', checkAuth, function (req, res) {
-    res.render('profile', {
-        title: 'User Profile'
-    })
-})
+
 
 router.get('/confirmation', async function (req, res) {
 
@@ -170,7 +166,6 @@ router.post('/registration', [check('email').isEmail()], async (req, res) => {
     }
 
     try {
-
         // Create activation key
         const key = confimationToken()
 
@@ -180,7 +175,7 @@ router.post('/registration', [check('email').isEmail()], async (req, res) => {
         // Create password hash
         const hashPass = await bcrypt.hash(password, 10)
 
-        const insertUser = await insertData("INSERT INTO customers (name, email, password, status) VALUES (?, ?, ?, 'inactive')", [req.body.name, req.body.email, hashPass])
+        const insertUser = await insertData("INSERT INTO customers (name, email, phone, password, status) VALUES (?, ?, ?, ?, 'inactive')", [req.body.name, req.body.email, req.body.phone, hashPass])
 
         // Create confirmation link
         const confirmationLink = `${host}/user/confirmation?email=${email}&key=${key}`
@@ -241,5 +236,34 @@ router.get('/logout', (req, res) => {
 // router.post('/login', function (req, res) {
 //     res.send('login...')
 // })
+
+router.get('/profile', checkAuth, async function (req, res) {
+
+    console.log(req.session.passport.user);
+
+
+    const userData = await getData('SELECT * FROM customers WHERE id = ?', req.session.passport.user)
+    console.log(userData);
+    const adress = userData.adress.split(';')
+    console.log(adress);
+
+    if (userData !== null) {
+        res.render('profile', {
+            title: 'User Profile',
+            user: {
+                name: userData.name,
+                email: userData.email,
+                phone: userData.phone,
+                adress: adress
+            }
+        })
+    }
+})
+
+router.get('/orders', checkAuth, function (req, res) {
+    res.render('orders', {
+        title: 'Orders'
+    })
+})
 
 module.exports = router

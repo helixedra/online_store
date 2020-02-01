@@ -1,6 +1,32 @@
 <div>
-    <h1>USER PROFILE</h1>
-    <form action="/user/logout?_method=DELETE" method="POST">
+    <h1>Профиль</h1>
+    {{!-- <form action="/user/logout?_method=DELETE" method="POST">
         <button type="submit">LOGOUT</button>
+    </form> --}}
+
+    <a href="/user/profile">Профиль</a>
+    <a href="/user/orders">Мои заказы</a>
+
+
+    <form action="" method="POST">
+        <input type="text" name="name" value="{{user.name}}">
+        <input type="text" name="email" value="{{user.email}}">
+        <input type="text" name="phone" value="{{user.phone}}">
     </form>
+
+    <div>
+        Сменить пароль
+    </div>
+
+    <div>
+        Мои адреса:
+        {{log adress}}
+    </div>
+    <div>
+        <ul>
+            {{#each user.adress}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
 </div>

@@ -19,17 +19,17 @@ app.use(methodOverride('_method'))
 
 // --- PASSPORT ---
 initializePassport(passport, async email => {
-    await getData('SELECT email FROM customers WHERE email = ?', email) 
+    await getData('SELECT email FROM customers WHERE email = ?', email)
 }, async id => {
     await getData('SELECT id FROM customers WHERE id = ?', id)
 })
 
 // --- SESSIONS ---
 app.use(session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false
-    }))
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+}))
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
@@ -44,7 +44,7 @@ app.use('/images', express.static(__dirname + '/views/images'))
 app.use('/js', express.static(__dirname + '/views/js'))
 app.use(express.static('public'))
 app.set('views', path.join(__dirname, 'views/'))
-app.engine('handlebars', exphbs({defaultLayout: 'main'}))
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 // --- ROUTER ---
@@ -53,10 +53,10 @@ app.use('/cart', cart)
 app.use('/products', products)
 app.use('/user', user)
 // 404
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.status(404).render('404')
 })
 
-app.listen(5050, function(){
+app.listen(5050, function () {
     console.log('Server started')
 });
