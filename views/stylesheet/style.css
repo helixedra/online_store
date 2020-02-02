@@ -516,8 +516,18 @@ footer {
 
 /* GLOBAL */
 
+.text-2 {
+    color: #4F4F4F;
+    font-size: .9rem;
+}
+.text-sm {
+    font-size: .9rem;
+}
 .m-top-2 {
     margin-top: 2rem;
+}
+.m-bot-2 {
+    margin-bottom: 2rem;
 }
 
 h1 {
@@ -1171,4 +1181,58 @@ a:hover {
 .alert-dismissible .close {
     padding: .8rem !important;
     height: auto !important;
+}
+
+/************CHECKOUT************/
+.checkout-header {
+    margin-top: 2rem;
+}
+.checkout {
+    /* padding: 2rem 0; */
+    max-width: 1280px;
+}
+.checkout-title {
+    padding: 2rem 0;
+}
+.checkout-section {
+    border: 1px solid #E5E5E5;
+    padding: 2rem;
+    margin-bottom: 1.8rem;
+}
+.checkout-section-title, .checkout-total-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0 0 2rem 0;
+    border-bottom: 1px solid #E5E5E5;
+}
+.checkout-section-content, .checkout-total-content  {
+    padding: 1.5rem 0;
+}
+.checkout-total {
+    background: #E5E5E5;
+    padding: 2rem;
+}
+.checkout-total-title {
+    border-color: #BDBDBD;
+}
+.checkout-total-receipt {
+    border-bottom: 1px solid #BDBDBD;
+    padding-bottom: 1.5rem; 
+}
+.checkout-total-result {
+    padding: 1.5rem 0;
+}
+.checkout-total-result > div > div:last-child {
+    font-size: 2rem;
+}
+.checkout-total-buttons {
+    padding-top: 1.5rem; 
+}
+.checkout-total-buttons > .block {
+    padding-top: 1.5rem;  
+}
+.sub-login-box {
+    margin-left: 2rem;
+    border-left: 1px solid #E5E5E5;
+    padding: 2rem;
 }

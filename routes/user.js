@@ -13,7 +13,7 @@ function checkAuth(req, res, next) {
     if (req.isAuthenticated()) {
         return next()
     } else {
-        res.redirect('/user/login')
+        res.redirect('/')
     }
 }
 // --- checkNotAuth ---
@@ -221,7 +221,7 @@ router.post('/registration', [check('email').isEmail()], async (req, res) => {
 
 })
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', [check('email').isEmail()], passport.authenticate('local', {
     successRedirect: '/user/login?status=success',
     successFlash: true,
     failureRedirect: '/user/login?status=error',
@@ -258,14 +258,39 @@ router.get('/profile', checkAuth, async function (req, res) {
     }
 })
 
+// Parse order string
+function itemParser(input) {
+    return input.split(',').map(item => {
+        return item.replace(/[a-z=]/gi, '').split(';')
+    }).map(item => {
+        return {
+            pid: +item[0],
+            qty: +item[1],
+            price: +item[2]
+        }
+    })
+}
+
+
 router.get('/orders', checkAuth, async function (req, res) {
 
     let orders = await getData('SELECT * FROM orders WHERE client_id = ?', req.session.passport.user)
 
+    // console.log(orders);
+
+    // console.log(orders.map(item => item.order_items.split(',')))
+
+    // let items = orders.map(item => itemParser(item.order_items))
+
+    orders = orders.map(order => {
+        order.order_items = itemParser(order.order_items)
+        return order
+    })
 
     res.render('orders', {
         title: 'Orders',
-        orders: orders
+        orders: orders,
+        // items: items
     })
 
 })

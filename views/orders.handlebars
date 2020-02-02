@@ -1,23 +1,40 @@
-<div>
-    <h1>Мои заказы</h1>
-    {{!-- <form action="/user/logout?_method=DELETE" method="POST">
+<div class="wrapper container container-sm container-md container-lg container-xl">
+    {{> header }}
+    <main>
+        <h1>Мои заказы</h1>
+        {{!-- <form action="/user/logout?_method=DELETE" method="POST">
         <button type="submit">LOGOUT</button>
     </form> --}}
 
-    <a href="/user/profile">Профиль</a>
-    <a href="/user/orders">Мои заказы</a>
+        <a href="/user/profile">Профиль</a>
+        <a href="/user/orders">Мои заказы</a>
 
-    <div>
-        {{#if orders}}
-            {{#each orders}}
-                <div>
-                    {{this.id}} | {{this.delivery_option}} | {{this.payment_option}} | {{this.delivery_address}} |
-                    {{this.np_address}} | {{this.order_items}} |
-                    {{this.order_status}} | {{this.total}} | {{this.datetime}}
-                </div>
-            {{/each}}
-        {{else}}
-            <div>У вас нет никаких заказов</div>
-        {{/if}}
-    </div>
+        <table class="table">
+            {{#if orders}}
+                {{#each orders}}
+                    <tr>
+                        <td>{{this.id}}</td>
+                        <td>{{this.delivery_option}}</td>
+                        <td>{{this.payment_option}}</td>
+                        <td>{{this.delivery_address}}</td>
+                        <td>{{this.np_address}}</td>
+                        <td>{{this.order_status}}</td>
+                        <td>{{this.total}}</td>
+                        <td>{{this.datetime}}</td>
+                        <td>{{#each this.order_items}}
+                                <div>{{this.pid}}</div>
+                                <div>{{this.qty}}</div>
+                                <div>{{this.price}}</div>
+                            {{/each}}</td>
+                    </tr>
+                {{/each}}
+            {{else}}
+                <div>У вас нет никаких заказов</div>
+            {{/if}}
+        </table class="table">
+
+    </main>
+
 </div>
+
+{{> footer }}

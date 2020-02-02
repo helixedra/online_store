@@ -1,31 +1,38 @@
-<div>
-    <h1>Профиль</h1>
-    {{!-- <form action="/user/logout?_method=DELETE" method="POST">
+<div class="wrapper container container-sm container-md container-lg container-xl">
+    {{> header }}
+    <main>
+
+        <h1>Профиль</h1>
+        {{!-- <form action="/user/logout?_method=DELETE" method="POST">
         <button type="submit">LOGOUT</button>
     </form> --}}
 
-    <a href="/user/profile">Профиль</a>
-    <a href="/user/orders">Мои заказы</a>
+        <a href="/user/profile">Профиль</a>
+        <a href="/user/orders">Мои заказы</a>
 
 
-    <form action="" method="POST">
-        <input type="text" name="name" value="{{user.name}}">
-        <input type="text" name="email" value="{{user.email}}">
-        <input type="text" name="phone" value="{{user.phone}}">
-    </form>
+        <form action="" method="POST">
+            <input type="text" name="name" value="{{user.name}}">
+            <input type="text" name="email" value="{{user.email}}">
+            <input type="text" name="phone" value="{{user.phone}}">
+        </form>
 
-    <div>
-        Сменить пароль
-    </div>
+        <div>
+            Сменить пароль
+        </div>
 
-    <div>
-        Мои адреса:
-    </div>
-    <div>
-        <ul>
-            {{#each user.address}}
-                <li>{{this}}</li>
-            {{/each}}
-        </ul>
-    </div>
+        <div>
+            Мои адреса:
+        </div>
+        <div>
+            <ul>
+                {{#each user.address}}
+                    <li>{{this}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    </main>
+
 </div>
+
+{{> footer }}
