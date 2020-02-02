@@ -1206,7 +1206,7 @@ a:hover {
     border-bottom: 1px solid #E5E5E5;
 }
 .checkout-section-content, .checkout-total-content  {
-    padding: 1.5rem 0;
+    padding-top: 1.5rem;
 }
 .checkout-total {
     background: #E5E5E5;
