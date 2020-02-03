@@ -134,18 +134,18 @@
                             <div class="checkout-total-content">
                                 <div class="checkout-total-receipt">
                                     <div class="row no-gutters">
-                                        <div class="col-sm-8">5 товаров на сумму</div>
-                                        <div class="col-sm-4 text-right"><strong>13 456 ₴</strong></div>
+                                        <div class="col-sm-8"><span id="total-qty">0</span> товаров на сумму</div>
+                                        <div class="col-sm-4 text-right text-bold" id="checkoutTotal">0 ₴</div>
                                     </div>
                                     <div class="row no-gutters">
                                         <div class="col-sm-8">доставка</div>
-                                        <div class="col-sm-4 text-right"><strong>350 ₴</strong></div>
+                                        <div class="col-sm-4 text-right text-bold">350 ₴</div>
                                     </div>
                                 </div>
                                 <div class="checkout-total-result">
                                     <div class="row no-gutters">
-                                        <div class="col-sm-4"><strong>Итого</strong></div>
-                                        <div class="col-sm-8 text-right"><strong>13 456 ₴</strong></div>
+                                        <div class="col-sm-4 text-bold ">Итого</div>
+                                        <div class="col-sm-8 text-right text-bold" id="checkoutTotalEnd">0 ₴</div>
                                     </div>
                                 </div>
 
@@ -169,5 +169,6 @@
             </form>
         </section>
     </main>
-    {{!-- <script src="/js/checkout.js"></script> --}}
+    {{!-- <script src="/js/cart.js"></script> --}}
+    <script src="/js/checkout.js"></script>
 </div>

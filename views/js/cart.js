@@ -244,6 +244,8 @@ function total() {
         $('.checkout-total-sum').html(numFormat(total) + ' ₴')
         $('input[name=order]').val(createOrder())
         $('input[name=total]').val(total)
+        countQty()
+        checkoutTotal()
     }
 }
 // ----
@@ -358,10 +360,20 @@ $('body').on('click', '.plusqty', function () {
         qty.val(parseInt(qty.val()) + 1)
         let sum = numFormat((qty.val() * price))
         $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
+
+
         totalLast()
         updateQuantity(id, qty.val())
         cartCounter()
+
+        if (isCheckout()) {
+            // $('#item-' + id).data('item-sum', sum)
+            // console.log($('#item-' + id));
+            console.log($('#item-' + id).data('item-sum'));
+
+        }
     }
+
 });
 // ---
 
@@ -374,6 +386,7 @@ $('body').on('click', '.minusqty', function () {
         qty.val(parseInt(qty.val()) - 1)
         let sum = numFormat(qty.val() * price)
         $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
+        // $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
         totalLast()
         updateQuantity(id, qty.val())
         cartCounter()
@@ -427,55 +440,8 @@ updateCart()
 // --- GET TOTAL AFTER ALL
 totalLast()
 
-$(document).ready(function () {
 
 
-    // Radio buttons select
-    $('.radio-select').click(function () {
-
-        function contentBlock(element, block) {
-
-            //If this block has content
-            if (element.parent().has('div.selected-content').length) {
-                //Hide all blocks
-                $('.' + block + ' > .selected-content').addClass('none')
-                //Then show selected
-                element.parent().children('.selected-content').removeClass('none')
-            }
-        }
-
-        function activeRadio(element) {
-
-            //Get name of controls block
-            let block = element.parent().attr('class')
-
-            //Remove active status from all elements of block 
-            $('.' + block + '> .radio-select > i').removeClass().addClass('far fa-circle')
-            $('.' + block + '> .radio-select').removeClass('radio-active')
-
-            //Add active status to selected item
-            element.addClass('radio-active')
-            element.children('i').attr('class', 'far fa-check-circle')
-
-            contentBlock(element, block)
-
-            let optionName = element.parent().attr('class')
-            $('input[name=' + optionName + ']').val(element.data(optionName))
-        }
-
-        activeRadio($(this))
-
-    })
-
-    // Checkout cart
-
-    // getCheckoutCart(dataItems)
-
-    // 
-    getCheckoutCart(dataItems)
-    // getCheckoutCart(dataItems)
-
-})
 
 function isCheckout() {
     return $('.checkout-cart').length ? true : false
@@ -498,7 +464,7 @@ function checkoutCartItems(data) {
             <div class="item-code">Код товара: <span>${value.id}</span></div>
         </div>
         <div class="item-price" data-price="${value.price}">${numFormat(value.price)} ₴</div>
-        <div class="item-qty" data-qty="${currentItemQty(value.id)}">
+        <div class="item-qty" data-item="${value.id}" data-qty="${currentItemQty(value.id)}">
          <button class="reset-btn minusqty" data-item="${value.id}"><i class="far fa-minus"></i></button>
             <input type="number" data-item="${value.id}" data-price="${value.price}" value="${currentItemQty(value.id)}" class="reset-btn qty">
              <button class="reset-btn plusqty" data-item="${value.id}"><i class="far fa-plus"></i></button>
@@ -522,22 +488,17 @@ function createOrder() {
 }
 
 function checkoutTotal() {
-
-    // setTimeout(function(){
-    //     let total = $('#total').data('total')
-    //     console.log(total);
-    // },850)
-
-    // let itemsTotal = $('.checkout-cart > .item')
-    // let total = 0
-    // itemsTotal.each(function(){
-    //     total += $(this).data('item-sum')
-    // })
-    // let total = $('#total').data('total')
-    // console.log(total);
-    // $('.checkout-total-sum').html( numFormat(total)+' ₴' )
-    // $('input[name=order]').val(createOrder())
-    // $('input[name=total]').val(total)
+    let delivery = 350
+    let itemsTotal = $('.checkout-cart > .item')
+    console.log(itemsTotal)
+    let total = 0
+    itemsTotal.each(function () {
+        total += $(this).data('item-sum')
+    })
+    console.log(total)
+    $('#checkoutTotal').html(numFormat(total) + ' ₴')
+    $('#checkoutTotalEnd').html(numFormat(total + delivery) + ' ₴')
+    // $('.item[data-item="' + id + '"]').data('item-sum', sum)
 }
 
 function getCheckoutCart(data) {
@@ -554,3 +515,4 @@ function getCheckoutCart(data) {
     })
 
 }
+

@@ -515,6 +515,9 @@ footer {
 }
 
 /* GLOBAL */
+.text-bold {
+    font-weight: bold;
+}
 
 .text-2 {
     color: #4F4F4F;
