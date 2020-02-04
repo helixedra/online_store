@@ -103,16 +103,36 @@ function hideError(input) {
     $('#' + input).removeClass('input-error')
 }
 
-// LOGIN
-$("#loginForm").submit(function (e) {
-    e.preventDefault();
+$(document).ready(function () {
 
+    isLoginCheckout()
+    $("#closeCheckout").click(function () {
+        event.preventDefault();
+        history.back(1);
+    });
+
+})
+
+//Check if login on checkout page
+function isLoginCheckout() {
+    if (+$('input[name=client_id]').val() === 0) {
+        console.log('not logged');
+        $('.sub-login-box').addClass('visible')
+    } else {
+        console.log('logged');
+        $('.sub-login-box').removeClass('visible').addClass('invisible')
+    }
+}
+
+// LOGIN
+$("button#loginSubmit").click(function (e) {
+    e.preventDefault();
     // Return validation status true||false
     let vEmail = validateEmail('login', $('#loginEmail').val()),
         vPassword = validatePassword('login', $('#loginPassword').val())
 
     if (vEmail && vPassword) {
-        login($(this))
+        login($('form#loginForm'))
     }
 });
 
@@ -154,25 +174,18 @@ function statusLogin() {
 }
 
 function fadeError() {
+
+    setTimeout(() => {
+        location.reload();
+    }, 2000)
     setTimeout(() => {
         $('.alert').hide()
+
     }, 10000)
 }
 
 
-$(window).on('load', function () {
-    // $.ajax({
-    //     // async: false,
-    //     url: "/login?auth=status",
-    //     type: "GET",
-    //     dataType: 'json',
-    //     data: {auth: 'status' },
-    //     success: function(response) {
-    //         console.log(response);
-    //     }
-    // })
-    statusLogin()
-})
+
 
 $('.pass-eye').on('click', function () {
     let input = $(this).attr('data-eye')
@@ -187,7 +200,7 @@ $('.pass-eye').on('click', function () {
 })
 
 // Registration
-$("#registrationForm").submit(function (e) {
+$("input#regSubmit").click(function (e) {
     e.preventDefault();
 
     // Return validation status true||false
@@ -197,7 +210,7 @@ $("#registrationForm").submit(function (e) {
         vPassword = validatePassword('reg', $('#regPassword').val())
 
     if (vName && vPhone && vEmail && vPassword) {
-        registration($(this))
+        registration($('form#registrationForm'))
     }
 
 })

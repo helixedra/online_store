@@ -274,6 +274,8 @@ function itemParser(input) {
 
 router.get('/orders', checkAuth, async function (req, res) {
 
+
+
     let orders = await getData('SELECT * FROM orders WHERE client_id = ?', req.session.passport.user)
 
     // console.log(orders);
@@ -282,10 +284,15 @@ router.get('/orders', checkAuth, async function (req, res) {
 
     // let items = orders.map(item => itemParser(item.order_items))
 
-    orders = orders.map(order => {
-        order.order_items = itemParser(order.order_items)
-        return order
-    })
+    if (orders !== null) {
+        orders = orders.map(order => {
+            order.order_items = itemParser(order.order_items)
+            return order
+        })
+    } else {
+        orders = null
+    }
+
 
     res.render('orders', {
         title: 'Orders',

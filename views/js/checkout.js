@@ -156,6 +156,8 @@ function checkoutTotal() {
         })
         $('#checkoutTotal').html(numFormat(total) + ' ₴')
         $('#checkoutTotalEnd').html(numFormat(total + delivery) + ' ₴')
+        $('input[name=order]').val(createOrder())
+        $('input[name=total]').val(total + delivery)
     }, 100)
 
 }
@@ -180,6 +182,10 @@ $(document).ready(function () {
     // Radio buttons select
     $('.radio-select').click(function () {
         activeRadio($(this))
+    })
+
+    $('#loginModal').click(function (event) {
+        event.preventDefault();
     })
 
     getCheckoutCart(dataItems)
@@ -342,6 +348,14 @@ $('body').on('click', '.item-delete', function () {
 })
 // ---
 
+function createOrder() {
+    let cartItems = $('.checkout-cart > .item')
+    let order = []
+    cartItems.each(function () {
+        order.push(`pid=${$(this).children('.item-info').data('pid')};qty=${$(this).children('.item-qty').data('qty')};price=${$(this).children('.item-price').data('price')}`)
+    })
+    return order
+}
 
 
 //     // Checkout cart

@@ -26,12 +26,15 @@ router.post('/getcart', function (req, res) {
 router.get('/checkout', async function (req, res) {
 
     //Check if user is logged in
-    if (req.session.passport !== undefined) {
+    if (req.session.passport !== undefined && Object.entries(req.session.passport).length !== 0) {
+
+        const userId = req.session.passport.user
 
         //User is logged in
-        let user = await getData('SELECT * FROM customers WHERE id = ?', req.session.passport.user)
+        let user = await getData('SELECT * FROM customers WHERE id = ?', userId)
 
         if (user !== null) {
+
             res.render('checkout', {
                 title: 'Оформление заказа',
                 cart: '',
@@ -54,11 +57,18 @@ router.get('/checkout', async function (req, res) {
         }
 
     } else {
+
         //User in NOT legged in
         res.render('checkout', {
             title: 'Оформление заказа',
             cart: '',
-            user: { id: 0 }
+            user: {
+                id: 0,
+                name: '',
+                phone: '',
+                email: '',
+                address: ''
+            }
         })
     }
 
