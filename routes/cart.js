@@ -98,7 +98,7 @@ router.post('/checkout', async function (req, res) {
             let mail = {
                 from: '"Lansot" <sales@lansot.com>',
                 to: req.body.email,
-                subject: 'Ваша заказ №' + newOrder.insertId + ' принят',
+                subject: 'Ваш заказ №' + newOrder.insertId + ' принят',
                 template: 'checkout_client_email',
                 context: {
                     client_name: req.body.name,

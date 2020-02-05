@@ -263,26 +263,21 @@ function itemParser(input) {
     return input.split(',').map(item => {
         return item.replace(/[a-z=]/gi, '').split(';')
     }).map(item => {
+
         return {
             pid: +item[0],
             qty: +item[1],
             price: +item[2]
         }
+
+
     })
 }
 
 
 router.get('/orders', checkAuth, async function (req, res) {
 
-
-
     let orders = await getData('SELECT * FROM orders WHERE client_id = ?', req.session.passport.user)
-
-    // console.log(orders);
-
-    // console.log(orders.map(item => item.order_items.split(',')))
-
-    // let items = orders.map(item => itemParser(item.order_items))
 
     if (orders !== null) {
         orders = orders.map(order => {
@@ -293,11 +288,40 @@ router.get('/orders', checkAuth, async function (req, res) {
         orders = null
     }
 
+    let ordersProductsIds = []
+
+    orders.map(item => {
+        item.order_items.map(item => {
+            if (!ordersProductsIds.includes(item.pid)) ordersProductsIds.push(item.pid)
+        })
+    })
+
+    ordersProductsIds = ordersProductsIds.join()
+
+    const ordersProductsData = await getData('SELECT id,ref,title,uri,cover_img,color,size FROM products WHERE id IN (' + ordersProductsIds + ')')
+
+
+    let newOrders = orders.map(item => {
+        item.order_items = item.order_items.map(order => {
+            let product = ordersProductsData.find(p => p.id === order.pid)
+            return order = {
+                id: order.pid,
+                qty: order.qty,
+                price: order.price,
+                ref: product.ref,
+                uri: product.uri,
+                title: product.title,
+                cover_img: product.cover_img,
+                color: product.color,
+                size: product.size
+            }
+        })
+        return item
+    })
 
     res.render('orders', {
         title: 'Orders',
-        orders: orders,
-        // items: items
+        orders: newOrders
     })
 
 })
