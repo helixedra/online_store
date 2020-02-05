@@ -212,7 +212,7 @@ function activeRadio(element) {
     element.children('i').attr('class', 'far fa-check-circle')
     contentBlock(element, block)
     let optionName = element.parent().attr('class')
-    $('input[name=' + optionName + ']').val(element.data(optionName))
+    $('input[name=' + optionName.replace('-', '_') + ']').val(element.data(optionName))
 }
 /********************** RADIO BUTTONS --> ***********************/
 
@@ -234,12 +234,16 @@ function checkoutCartItems(data) {
         </div>
         <div class="item-price" data-price="${value.price}">${numFormat(value.price)} ₴</div>
         <div class="item-qty" data-item="${value.id}" data-qty="${currentItemQty(value.id)}">
-         <button class="reset-btn minusqty" data-item="${value.id}"><i class="far fa-minus"></i></button>
+         <button type="button" class="reset-btn minusqty" data-item="${value.id}"><i class="far fa-minus"></i></button>
             <input type="number" data-item="${value.id}" data-price="${value.price}" value="${currentItemQty(value.id)}" class="reset-btn qty">
-             <button class="reset-btn plusqty" data-item="${value.id}"><i class="far fa-plus"></i></button>
+             <button type="button" class="reset-btn plusqty" data-item="${value.id}"><i class="far fa-plus"></i></button>
         </div>
         <div class="item-sum-price sum-price" data-item="${value.id}">${numFormat(currentItemQty(value.id) * value.price)} ₴</div>
-        <button class="item-delete reset-btn" data-item="${value.id}"><i class="far fa-times"></i></button>
+        <button type="button" class="item-delete reset-btn" data-item="${value.id}"><i class="far fa-times"></i></button>
+        <input type="hidden" name="pid" value="${value.id}">
+        <input type="hidden" name="item_title" value="${value.title}">
+        <input type="hidden" data-qty-item="${value.id}" name="qty" value="${currentItemQty(value.id)}">
+        <input type="hidden" name="item_price" value="${value.price}">
     </div>`
     }).join('')
 
@@ -282,6 +286,7 @@ $('body').on('click', '.plusqty', function () {
         let sum = numFormat((qty.val() * price))
         $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
         $('.item-qty[data-item="' + id + '"]').attr('data-qty', qty.val());
+        $('input[data-qty-item="' + id + '"]').val(qty.val()); ///----
         $('#item-' + id).attr('data-item-sum', qty.val() * price);
         updateQuantity(id, qty.val())
         countQty()
@@ -300,6 +305,7 @@ $('body').on('click', '.minusqty', function () {
         let sum = numFormat(qty.val() * price)
         $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
         $('.item-qty[data-item="' + id + '"]').attr('data-qty', qty.val());
+        $('input[data-qty-item="' + id + '"]').val(qty.val()); ///----
         $('#item-' + id).attr('data-item-sum', qty.val() * price);
         updateQuantity(id, qty.val())
         countQty()
@@ -326,6 +332,7 @@ $('body').on('change', '.qty', function () {
         let sum = numFormat(qty * price)
         $('.sum-price[data-item="' + id + '"]').html(sum + " ₴")
         $('.item-qty[data-item="' + id + '"]').attr('data-qty', qty);
+        $('input[data-qty-item="' + id + '"]').val(qty); ///----
         $('#item-' + id).attr('data-item-sum', qty * price);
         updateQuantity(id, qty)
         countQty()

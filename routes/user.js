@@ -300,7 +300,6 @@ router.get('/orders', checkAuth, async function (req, res) {
 
     const ordersProductsData = await getData('SELECT id,ref,title,uri,cover_img,color,size FROM products WHERE id IN (' + ordersProductsIds + ')')
 
-
     let newOrders = orders.map(item => {
         item.order_items = item.order_items.map(order => {
             let product = ordersProductsData.find(p => p.id === order.pid)

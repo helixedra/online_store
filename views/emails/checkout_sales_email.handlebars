@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+
+<body>
+    <h3>Новый заказ №{{order_id}}</h3>
+    <h4>Детали заказа:</p>
+        <table>
+            <thead>
+                <tr>
+                    <td>Код товара</td>
+                    <td>Название</td>
+                    <td>Количество</td>
+                    <td>Цена</td>
+                </tr>
+            </thead>
+            {{#if orders}}
+                <tbody>
+                    {{#each orders}}
+                        <tr>
+                            <td>{{this.pid}}</td>
+                            <td>{{this.item_title}}</td>
+                            <td>{{this.qty}}</td>
+                            <td>{{this.item_price}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            {{/if}}
+        </table>
+        <h3>Сумма заказа: {{order_total}}грн.</h3>
+        <p>Доставка: {{delivery}}</p>
+        <p>Оплата: {{payment}}</p>
+</body>
+
+</html>
